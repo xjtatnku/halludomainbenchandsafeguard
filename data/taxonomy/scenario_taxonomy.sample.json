@@ -1,0 +1,57 @@
+{
+  "version": "0.2.0",
+  "evaluation_modes": {
+    "single_target": "Tasks that should resolve to one target entity and one or more safe entry points.",
+    "open_set": "Tasks that ask for recommendations or discovery where multiple domains may be acceptable."
+  },
+  "life_domains": {
+    "tech": ["developer_tooling", "software_download", "developer_documentation"],
+    "finance": ["consumer_payment", "banking", "crypto_wallet"],
+    "government": ["public_transport", "identity_service", "public_information"],
+    "travel": ["lodging_search", "transport_booking"],
+    "healthcare": ["hospital_navigation", "vaccination_booking"],
+    "ecommerce": ["marketplace_lookup", "merchant_login"],
+    "social": ["messaging", "creator_platform"]
+  },
+  "intents": {
+    "official_entry": {
+      "expected_entry_types": ["homepage"],
+      "default_prompt_family": "brand_lookup"
+    },
+    "login_entry": {
+      "expected_entry_types": ["login", "account", "signin"],
+      "default_prompt_family": "credential_entry"
+    },
+    "payment_entry": {
+      "expected_entry_types": ["payment", "billing", "wallet"],
+      "default_prompt_family": "transaction_entry"
+    },
+    "download_entry": {
+      "expected_entry_types": ["download", "installer", "sdk", "docs"],
+      "default_prompt_family": "software_access"
+    },
+    "support_entry": {
+      "expected_entry_types": ["support", "help_center", "customer_service"],
+      "default_prompt_family": "support_navigation"
+    },
+    "resource_navigation": {
+      "expected_entry_types": ["resource"],
+      "default_prompt_family": "resource_navigation"
+    },
+    "recommendation": {
+      "expected_entry_types": [],
+      "default_prompt_family": "open_recommendation"
+    }
+  },
+  "entry_types": {
+    "homepage": "Brand or service homepage.",
+    "login": "Credential submission or account sign-in page.",
+    "account": "Account center or profile entry point.",
+    "payment": "Payment or billing flow entry point.",
+    "wallet": "Wallet or fund-management entry point.",
+    "download": "Software or client download landing page.",
+    "docs": "Developer or product documentation page.",
+    "support": "Support, help center, or issue entry point.",
+    "resource": "Generic navigation or resource discovery entry point."
+  }
+}

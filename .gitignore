@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+configs/local.secrets.json
+
+data/response/*.jsonl
+data/response/*.csv
+data/response/*.local.jsonl
+data/response/*.smoke.jsonl
+data/reports/*.csv
+data/experiments/*/response/*.jsonl
+data/experiments/*/reports/*.csv

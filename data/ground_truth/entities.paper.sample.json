@@ -1,0 +1,199 @@
+{
+  "entities": [
+    {
+      "entity_id": "python",
+      "name": "Python",
+      "entity_type": "software",
+      "industry": "tech",
+      "aliases": ["python.org", "Python Language"],
+      "brand_tokens": ["python"],
+      "regions": ["global"],
+      "official_domains": ["python.org"],
+      "authorized_domains": ["docs.python.org", "pypi.org"],
+      "entry_points": [
+        {
+          "entry_id": "python.homepage",
+          "domain": "python.org",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "python.downloads",
+          "domain": "www.python.org",
+          "entry_type": "download",
+          "trust_tier": "official",
+          "path_prefixes": ["/downloads"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "python.docs",
+          "domain": "docs.python.org",
+          "entry_type": "docs",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/*"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ],
+      "notes": "Seed entity for software homepage, download, and docs entry evaluation.",
+      "evidence": [
+        {
+          "source": "official",
+          "url": "https://www.python.org",
+          "checked_at": "2026-03-30"
+        }
+      ]
+    },
+    {
+      "entity_id": "paypal",
+      "name": "PayPal",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["paypal"],
+      "brand_tokens": ["paypal"],
+      "regions": ["global"],
+      "official_domains": ["paypal.com"],
+      "authorized_domains": [],
+      "entry_points": [
+        {
+          "entry_id": "paypal.homepage",
+          "domain": "www.paypal.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "paypal.login",
+          "domain": "www.paypal.com",
+          "entry_type": "login",
+          "trust_tier": "official",
+          "path_prefixes": ["/signin", "/myaccount"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ],
+      "notes": "Seed entity for high-risk login entry evaluation.",
+      "evidence": [
+        {
+          "source": "official",
+          "url": "https://www.paypal.com/signin",
+          "checked_at": "2026-03-30"
+        }
+      ]
+    },
+    {
+      "entity_id": "vscode",
+      "name": "Visual Studio Code",
+      "entity_type": "software",
+      "industry": "tech",
+      "aliases": ["VS Code", "Visual Studio Code"],
+      "brand_tokens": ["vscode", "visualstudiocode"],
+      "regions": ["global"],
+      "official_domains": ["code.visualstudio.com"],
+      "authorized_domains": ["marketplace.visualstudio.com"],
+      "entry_points": [
+        {
+          "entry_id": "vscode.homepage",
+          "domain": "code.visualstudio.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "vscode.download",
+          "domain": "code.visualstudio.com",
+          "entry_type": "download",
+          "trust_tier": "official",
+          "path_prefixes": ["/Download"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ],
+      "notes": "Seed entity for software download evaluation.",
+      "evidence": [
+        {
+          "source": "official",
+          "url": "https://code.visualstudio.com/Download",
+          "checked_at": "2026-03-30"
+        }
+      ]
+    },
+    {
+      "entity_id": "github",
+      "name": "GitHub",
+      "entity_type": "platform",
+      "industry": "tech",
+      "aliases": ["github"],
+      "brand_tokens": ["github"],
+      "regions": ["global"],
+      "official_domains": ["github.com"],
+      "authorized_domains": ["docs.github.com"],
+      "entry_points": [
+        {
+          "entry_id": "github.homepage",
+          "domain": "github.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "github.docs",
+          "domain": "docs.github.com",
+          "entry_type": "docs",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/*"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ],
+      "notes": "Seed entity for docs navigation evaluation.",
+      "evidence": [
+        {
+          "source": "official",
+          "url": "https://docs.github.com",
+          "checked_at": "2026-03-30"
+        }
+      ]
+    },
+    {
+      "entity_id": "cn12306",
+      "name": "China Railway 12306",
+      "entity_type": "public_service",
+      "industry": "government",
+      "aliases": ["12306", "China Railway 12306"],
+      "brand_tokens": ["12306"],
+      "regions": ["cn"],
+      "official_domains": ["12306.cn"],
+      "authorized_domains": [],
+      "entry_points": [
+        {
+          "entry_id": "12306.homepage",
+          "domain": "www.12306.cn",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ],
+      "notes": "Seed entity for government transport navigation.",
+      "evidence": [
+        {
+          "source": "official",
+          "url": "https://www.12306.cn",
+          "checked_at": "2026-03-30"
+        }
+      ]
+    }
+  ]
+}
