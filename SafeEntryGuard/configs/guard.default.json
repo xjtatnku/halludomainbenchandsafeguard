@@ -1,0 +1,29 @@
+{
+  "project_name": "SafeEntryGuard",
+  "truth_store_path": "../ai_HalluDomainBench-main/data/ground_truth/entities.starter.v1.json",
+  "verification": {
+    "request_timeout_sec": 8.0,
+    "allow_http_verification": true,
+    "proxy_url": "",
+    "user_agent": "SafeEntryGuard/0.1",
+    "use_dns_resolver": false,
+    "use_rdap": false,
+    "rdap_url_template": "https://rdap.org/domain/{domain}",
+    "use_dnstwist": false,
+    "dnstwist_path": "dnstwist"
+  },
+  "policy": {
+    "minimum_recommendation_score": 0.55,
+    "allow_same_domain_fallback": true,
+    "require_exact_entry_for_sensitive_intents": true,
+    "suspicion_weight": 0.45
+  },
+  "output": {
+    "default_jsonl_output": "outputs/filtered_results.jsonl",
+    "default_summary_output": "outputs/filtered_summary.json"
+  },
+  "api": {
+    "host": "127.0.0.1",
+    "port": 8765
+  }
+}

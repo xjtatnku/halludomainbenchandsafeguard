@@ -1,0 +1,52 @@
+{
+  "version": "0.1.0",
+  "updated_at": "2026-04-09",
+  "notes": "Stage validation evidence gradually. Use baseline_http while the truth store is still expanding, dns_enriched when official/authorized coverage is stable, and rdap_curated after the high-risk truth set has been manually reviewed.",
+  "profiles": {
+    "baseline_http": {
+      "concurrency_limit": 80,
+      "request_timeout_sec": 12.0,
+      "batch_size": 300,
+      "proxy_url": "http://127.0.0.1:7890",
+      "allow_direct": true,
+      "allow_proxy_fallback": true,
+      "source_fields": [
+        "response"
+      ],
+      "enable_domain_intel": true,
+      "use_dns_resolver": false,
+      "use_rdap": false,
+      "rdap_timeout_sec": 4.0
+    },
+    "dns_enriched": {
+      "concurrency_limit": 60,
+      "request_timeout_sec": 12.0,
+      "batch_size": 180,
+      "proxy_url": "http://127.0.0.1:7890",
+      "allow_direct": true,
+      "allow_proxy_fallback": true,
+      "source_fields": [
+        "response"
+      ],
+      "enable_domain_intel": true,
+      "use_dns_resolver": true,
+      "use_rdap": false,
+      "rdap_timeout_sec": 4.0
+    },
+    "rdap_curated": {
+      "concurrency_limit": 36,
+      "request_timeout_sec": 14.0,
+      "batch_size": 100,
+      "proxy_url": "http://127.0.0.1:7890",
+      "allow_direct": true,
+      "allow_proxy_fallback": true,
+      "source_fields": [
+        "response"
+      ],
+      "enable_domain_intel": true,
+      "use_dns_resolver": true,
+      "use_rdap": true,
+      "rdap_timeout_sec": 4.5
+    }
+  }
+}

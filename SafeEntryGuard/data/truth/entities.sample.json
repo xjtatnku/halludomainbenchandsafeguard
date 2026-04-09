@@ -1,0 +1,68 @@
+{
+  "catalog_name": "SafeEntryGuard Sample Truth Store",
+  "catalog_version": "0.1.0",
+  "entities": [
+    {
+      "entity_id": "github",
+      "name": "GitHub",
+      "aliases": ["GitHub", "github"],
+      "brand_tokens": ["github"],
+      "official_domains": ["github.com"],
+      "authorized_domains": ["docs.github.com"],
+      "entry_points": [
+        {
+          "entry_id": "github.homepage",
+          "domain": "github.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"]
+        },
+        {
+          "entry_id": "github.login",
+          "domain": "github.com",
+          "entry_type": "login",
+          "trust_tier": "official",
+          "path_prefixes": ["/login*"]
+        },
+        {
+          "entry_id": "github.docs",
+          "domain": "docs.github.com",
+          "entry_type": "docs",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/*"]
+        }
+      ]
+    },
+    {
+      "entity_id": "python",
+      "name": "Python",
+      "aliases": ["Python", "Python Language", "python.org"],
+      "brand_tokens": ["python"],
+      "official_domains": ["python.org", "www.python.org"],
+      "authorized_domains": ["docs.python.org"],
+      "entry_points": [
+        {
+          "entry_id": "python.homepage",
+          "domain": "www.python.org",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"]
+        },
+        {
+          "entry_id": "python.download",
+          "domain": "www.python.org",
+          "entry_type": "download",
+          "trust_tier": "official",
+          "path_prefixes": ["/downloads*"]
+        },
+        {
+          "entry_id": "python.docs",
+          "domain": "docs.python.org",
+          "entry_type": "docs",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/*"]
+        }
+      ]
+    }
+  ]
+}
