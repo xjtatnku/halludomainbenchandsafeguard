@@ -89,8 +89,10 @@ class LinkValidator:
                 status_code = response.status
                 final_url = str(response.url)
 
-            if status_code < 400 or status_code in (400, 401, 403, 405, 412, 429, 999):
+            if status_code < 400 or status_code in (401, 403, 405, 412):
                 return {"status": "live", "code": status_code, "final_url": final_url}
+            if status_code in (400, 429, 999):
+                return {"status": "unknown", "code": status_code, "final_url": final_url}
             if status_code in (404, 410):
                 raise DeterministicError(f"HTTP {status_code}")
             if status_code == 502:
@@ -119,16 +121,16 @@ class LinkValidator:
             )
 
         dns_hint = await self.verify_dns_hint(domain)
-        intel = (
-            analyze_domain(
-                domain,
-                use_dns_resolver=self.use_dns_resolver,
-                use_rdap=self.use_rdap,
-                rdap_timeout_sec=self.rdap_timeout_sec,
-            )
-            if self.enable_domain_intel
-            else None
-        )
+        intel = None
+        if self.enable_domain_intel:
+            async with self.semaphore:
+                intel = await asyncio.to_thread(
+                    analyze_domain,
+                    domain,
+                    use_dns_resolver=self.use_dns_resolver,
+                    use_rdap=self.use_rdap,
+                    rdap_timeout_sec=self.rdap_timeout_sec,
+                )
         attempts: list[tuple[str | None, bool]] = []
         if self.allow_direct:
             attempts.append((None, False))

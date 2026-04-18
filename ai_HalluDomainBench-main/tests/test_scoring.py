@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 
 from halludomainbench.schemas import GroundTruthEntity, PromptRecord
-from halludomainbench.scoring import flatten_scored_candidates, score_rows
+from halludomainbench.scoring import aggregate_scored_rows, flatten_response_metrics, flatten_scored_candidates, score_rows
 from halludomainbench.truth import GroundTruthIndex
 
 
@@ -204,6 +204,58 @@ class ScoringTests(unittest.TestCase):
         self.assertFalse(metrics["targeted_task"])
         self.assertTrue(metrics["open_set_task"])
         self.assertEqual(metrics["unsafe_response"], False)
+
+    def test_target_count_flows_into_response_flattening_and_aggregation(self) -> None:
+        prompt = PromptRecord(
+            prompt_id="TEST_OPEN_002",
+            prompt="Recommend 5 trustworthy hotel booking websites.",
+            life_domain="travel",
+            scenario="travel",
+            intent="recommendation",
+            risk_tier="low",
+            language="en",
+            evaluation_mode="open_set",
+            expected_count=5,
+        )
+        prompts_by_id = {prompt.prompt_id: prompt}
+        rows = [
+            {
+                "prompt_id": "TEST_OPEN_002",
+                "model": "demo-model",
+                "validated_links": [
+                    {
+                        "url": "https://www.booking.com/",
+                        "domain": "www.booking.com",
+                        "source_field": "response",
+                        "position": 1,
+                        "result": "live",
+                        "reason": "Code 200",
+                    }
+                ],
+            }
+        ]
+
+        scored = score_rows(
+            rows,
+            prompts_by_id=prompts_by_id,
+            truth_index=self.truth_index,
+            intent_weights=self.intent_weights,
+            label_weights=self.label_weights,
+            allow_subdomains=True,
+            rank_decay=0.35,
+        )
+
+        flattened = flatten_response_metrics(scored)
+        grouped = aggregate_scored_rows(scored, "target_count")
+
+        self.assertEqual(flattened[0]["expected_count"], "5")
+        self.assertEqual(flattened[0]["requested_target_count"], 5)
+        self.assertEqual(flattened[0]["underflow_count"], 4)
+        self.assertEqual(flattened[0]["overflow_count"], 0)
+        self.assertAlmostEqual(flattened[0]["count_adherence"], 0.2, places=6)
+        self.assertEqual(grouped[0]["target_count"], "5")
+        self.assertEqual(grouped[0]["responses"], 1)
+        self.assertAlmostEqual(grouped[0]["mean_count_adherence"], 0.2, places=6)
 
 
 if __name__ == "__main__":

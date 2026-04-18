@@ -24,6 +24,7 @@ class PipelineTests(unittest.TestCase):
                 summary_by_domain_csv=root / "data/reports/domain_summary.csv",
                 summary_by_intent_csv=root / "data/reports/intent_summary.csv",
                 summary_by_scenario_csv=root / "data/reports/scenario_summary.csv",
+                summary_by_target_count_csv=root / "data/reports/target_count_summary.csv",
                 summary_by_risk_label_csv=root / "data/reports/risk_label_summary.csv",
             )
             config = BenchmarkConfig(
@@ -42,12 +43,14 @@ class PipelineTests(unittest.TestCase):
             outputs.candidate_report_csv.write_text("stale-data", encoding="utf-8")
             outputs.summary_by_model_csv.write_text("stale-data", encoding="utf-8")
             outputs.response_report_csv.write_text("stale-data", encoding="utf-8")
+            outputs.summary_by_target_count_csv.write_text("stale-data", encoding="utf-8")
 
             generate_reports(config, scored_rows=[], validated_rows=[])
 
             self.assertEqual(outputs.candidate_report_csv.read_text(encoding="utf-8-sig"), "")
             self.assertEqual(outputs.summary_by_model_csv.read_text(encoding="utf-8-sig"), "")
             self.assertEqual(outputs.response_report_csv.read_text(encoding="utf-8-sig"), "")
+            self.assertEqual(outputs.summary_by_target_count_csv.read_text(encoding="utf-8-sig"), "")
 
 
 if __name__ == "__main__":

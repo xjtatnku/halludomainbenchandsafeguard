@@ -7,6 +7,27 @@ from halludomainbench.schemas import ExtractedLink
 from halludomainbench.validators import LinkValidator, TemporaryError
 
 
+class _FakeResponse:
+    def __init__(self, status: int, url: str) -> None:
+        self.status = status
+        self.url = url
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        return False
+
+
+class _FakeSession:
+    def __init__(self, status: int, url: str) -> None:
+        self._status = status
+        self._url = url
+
+    def get(self, *args, **kwargs):
+        return _FakeResponse(self._status, self._url)
+
+
 class ValidatorTests(unittest.IsolatedAsyncioTestCase):
     async def test_validate_link_marks_unresolved_domains_as_dead(self) -> None:
         validator = LinkValidator(
@@ -67,6 +88,27 @@ class ValidatorTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(evidence.result, "unknown")
         self.assertEqual(evidence.reason, "Connection Failed")
         self.assertTrue(evidence.dns_resolved)
+
+    async def test_check_http_status_treats_429_as_unknown_not_live(self) -> None:
+        validator = LinkValidator(
+            concurrency_limit=5,
+            proxy_url="",
+            request_timeout_sec=1.0,
+            allow_direct=True,
+            allow_proxy_fallback=False,
+            enable_domain_intel=False,
+            use_dns_resolver=False,
+            use_rdap=False,
+            rdap_timeout_sec=1.0,
+        )
+
+        result = await validator.check_http_status(
+            session=_FakeSession(status=429, url="https://example.com"),
+            url="https://example.com",
+            proxy=None,
+        )
+
+        self.assertEqual(result["status"], "unknown")
 
 
 if __name__ == "__main__":

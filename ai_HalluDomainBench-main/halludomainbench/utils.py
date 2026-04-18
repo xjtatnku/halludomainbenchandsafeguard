@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+LEGACY_PROMPT_DOMAIN_FIX_RE = re.compile(r'("prompt"\s*:\s*"[^"\r\n]*)(,\s*"domain"\s*:)', re.MULTILINE)
 
 
 def utc_now_iso() -> str:
@@ -25,8 +27,22 @@ def ensure_parent(path: Path) -> None:
 
 
 def read_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+    text = path.read_text(encoding="utf-8-sig")
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        repaired = _repair_common_legacy_json_text(text)
+        if repaired != text:
+            return json.loads(repaired)
+        raise
+
+
+def _repair_common_legacy_json_text(text: str) -> str:
+    repaired = text.replace("\ufeff", "").strip()
+    repaired = LEGACY_PROMPT_DOMAIN_FIX_RE.sub(r'\1"\2', repaired)
+    repaired = re.sub(r"(\})(\s*\{)", r"\1,\2", repaired)
+    repaired = re.sub(r",(\s*])", r"\1", repaired)
+    return repaired
 
 
 def write_json(path: Path, payload: Any) -> None:

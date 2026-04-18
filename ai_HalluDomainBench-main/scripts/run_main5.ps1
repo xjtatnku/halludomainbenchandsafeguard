@@ -1,6 +1,6 @@
 param(
-    [ValidateSet("core", "full")]
-    [string]$Dataset = "full",
+    [ValidateSet("new_dataset", "sample_all_quantity_variants")]
+    [string]$Dataset = "sample_all_quantity_variants",
 
     [ValidateSet("baseline_http", "dns_enriched")]
     [string]$EvidenceStage = "baseline_http",
@@ -17,9 +17,8 @@ $ErrorActionPreference = "Stop"
 $ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 switch ("$Dataset|$EvidenceStage") {
-    "core|baseline_http" { $Config = "configs/experiments/main5.core.v1.json" }
-    "core|dns_enriched" { $Config = "configs/experiments/main5.core.dns_enriched.v1.json" }
-    "full|baseline_http" { $Config = "configs/experiments/main5.full.v1.json" }
+    "new_dataset|baseline_http" { $Config = "configs/experiments/new_dataset.main5.v1.json" }
+    "sample_all_quantity_variants|baseline_http" { $Config = "configs/experiments/sample_all_quantity_variants.main5.v1.json" }
     default {
         throw "No config is defined for Dataset=$Dataset and EvidenceStage=$EvidenceStage"
     }

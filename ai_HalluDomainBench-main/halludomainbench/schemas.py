@@ -131,6 +131,9 @@ class ScoredCandidate:
     truth_entity_ids: list[str] = field(default_factory=list)
     risk_flags: list[str] = field(default_factory=list)
     suspicion_score: float = 0.0
+    semantic_label: str = ""
+    semantic_score: float = 0.0
+    semantic_matches: list[str] = field(default_factory=list)
     reason: str = ""
     position: int = 0
     final_domain: str = ""

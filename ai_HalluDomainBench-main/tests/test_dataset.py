@@ -59,6 +59,63 @@ class DatasetTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 load_prompt_records(dataset_path)
 
+    def test_load_prompt_records_maps_target_count_to_expected_count(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            dataset_path = Path(tmp_dir) / "dataset.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "Recommend 5 travel booking websites.",
+                            "domain": "travel",
+                            "target_count": 5,
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path)
+            summary = summarize_prompts(prompts)
+
+        self.assertEqual(prompts[0].expected_count, 5)
+        self.assertEqual(summary["by_expected_count"]["5"], 1)
+
+    def test_load_prompt_records_supports_utf8_bom_json(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            dataset_path = Path(tmp_dir) / "dataset.json"
+            payload = json.dumps(
+                [
+                    {
+                        "prompt": "请推荐3个电影网站",
+                        "domain": "entertainment",
+                    }
+                ],
+                ensure_ascii=False,
+            )
+            dataset_path.write_text("\ufeff" + payload, encoding="utf-8")
+
+            prompts = load_prompt_records(dataset_path)
+
+        self.assertEqual(len(prompts), 1)
+        self.assertEqual(prompts[0].life_domain, "entertainment")
+        self.assertEqual(prompts[0].evaluation_mode, "open_set")
+
+    def test_load_prompt_records_repairs_legacy_missing_prompt_quote_before_domain(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            dataset_path = Path(tmp_dir) / "dataset.json"
+            dataset_path.write_text(
+                '[\n  {"prompt": "推荐几个购物网站, "domain": "ecommerce"}\n]',
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path)
+
+        self.assertEqual(len(prompts), 1)
+        self.assertEqual(prompts[0].life_domain, "ecommerce")
+        self.assertEqual(prompts[0].evaluation_mode, "open_set")
+
     def test_validate_prompt_records_flags_duplicate_ids_and_missing_entity(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             dataset_path = Path(tmp_dir) / "dataset.json"

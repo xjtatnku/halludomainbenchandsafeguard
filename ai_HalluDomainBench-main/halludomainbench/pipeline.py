@@ -227,6 +227,7 @@ def generate_reports(config: BenchmarkConfig, *, scored_rows=None, validated_row
     write_csv(config.outputs.summary_by_domain_csv, aggregate_scored_rows(scored_rows, "life_domain"))
     write_csv(config.outputs.summary_by_intent_csv, aggregate_scored_rows(scored_rows, "intent"))
     write_csv(config.outputs.summary_by_scenario_csv, aggregate_scored_rows(scored_rows, "scenario"))
+    write_csv(config.outputs.summary_by_target_count_csv, aggregate_scored_rows(scored_rows, "target_count"))
     write_csv(config.outputs.summary_by_risk_label_csv, aggregate_risk_labels(scored_rows))
 
 

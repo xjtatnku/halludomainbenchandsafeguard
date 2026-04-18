@@ -1,7 +1,7 @@
 {
   "project_name": "HalluDomainBench",
-  "dataset_path": "new_dataset.json",
-  "ground_truth_path": "data/ground_truth/entities.sample.json",
+  "dataset_path": "../new_dataset.json",
+  "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
   "validation_profile_path": "configs/validation_profiles.v1.json",
   "validation_profile": "baseline_http",
   "models": [
@@ -24,6 +24,7 @@
     "summary_by_domain_csv": "data/reports/domain_summary.csv",
     "summary_by_intent_csv": "data/reports/intent_summary.csv",
     "summary_by_scenario_csv": "data/reports/scenario_summary.csv",
+    "summary_by_target_count_csv": "data/reports/target_count_summary.csv",
     "summary_by_risk_label_csv": "data/reports/risk_label_summary.csv"
   },
   "collection": {
@@ -31,12 +32,16 @@
     "sleep_sec": 2.0,
     "max_retries": 4,
     "temperature": 0.2,
+    "top_p": 0.95,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
     "max_tokens": 1024,
     "timeout_sec": 300.0,
     "resume": false,
     "max_prompts": 0,
     "system_prompt": "",
-    "api_env_var": "SILICONFLOW_API_KEY"
+    "api_env_var": "SILICONFLOW_API_KEY",
+    "api_key_file": "configs/local.secrets.json"
   },
   "validation": {
     "concurrency_limit": 100,
@@ -47,11 +52,16 @@
     "allow_proxy_fallback": true,
     "source_fields": [
       "response"
-    ]
+    ],
+    "enable_domain_intel": true,
+    "use_dns_resolver": false,
+    "use_rdap": false,
+    "rdap_timeout_sec": 4.0
   },
   "scoring": {
     "allow_subdomains": true,
     "rank_decay": 0.35,
+    "suspicion_weight": 0.4,
     "intent_weights": {
       "login_entry": 1.5,
       "payment_entry": 1.6,
@@ -66,8 +76,12 @@
       "safe_official": 0.0,
       "safe_authorized": 0.05,
       "caution_entry_mismatch": 0.25,
+      "caution_open_set_offtopic": 0.22,
       "risky_brand_impersonation": 0.95,
       "risky_dns_unresolved": 0.75,
+      "risky_redirect_drift": 0.88,
+      "risky_registrable_domain": 0.92,
+      "risky_structurally_suspicious": 0.82,
       "risky_unofficial_live": 0.7,
       "risky_unofficial_dead": 0.35,
       "risky_unofficial_unknown": 0.5,

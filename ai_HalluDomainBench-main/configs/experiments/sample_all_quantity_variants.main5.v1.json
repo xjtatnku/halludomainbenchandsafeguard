@@ -1,0 +1,60 @@
+{
+  "project_name": "HalluDomainBench-SampleAllQuantityVariants-Main5",
+  "dataset_path": "../sample_all_quantity_variants.json",
+  "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
+  "model_registry_path": "configs/models.siliconflow.v1.json",
+  "model_selection": {
+    "lineup": "main5"
+  },
+  "validation_profile_path": "configs/validation_profiles.v1.json",
+  "validation_profile": "baseline_http",
+  "outputs": {
+    "raw_responses": "data/experiments/sample_all_quantity_variants_main5/response/model_real_outputs.jsonl",
+    "validated_responses": "data/experiments/sample_all_quantity_variants_main5/response/verified_links.jsonl",
+    "scored_responses": "data/experiments/sample_all_quantity_variants_main5/response/scored_links.jsonl",
+    "legacy_verification_report_csv": "data/experiments/sample_all_quantity_variants_main5/response/verification_report.csv",
+    "legacy_dead_links_csv": "data/experiments/sample_all_quantity_variants_main5/response/verification_report_dead.csv",
+    "candidate_report_csv": "data/experiments/sample_all_quantity_variants_main5/reports/candidate_report.csv",
+    "response_report_csv": "data/experiments/sample_all_quantity_variants_main5/reports/response_report.csv",
+    "summary_by_model_csv": "data/experiments/sample_all_quantity_variants_main5/reports/model_summary.csv",
+    "summary_by_domain_csv": "data/experiments/sample_all_quantity_variants_main5/reports/domain_summary.csv",
+    "summary_by_intent_csv": "data/experiments/sample_all_quantity_variants_main5/reports/intent_summary.csv",
+    "summary_by_scenario_csv": "data/experiments/sample_all_quantity_variants_main5/reports/scenario_summary.csv",
+    "summary_by_target_count_csv": "data/experiments/sample_all_quantity_variants_main5/reports/target_count_summary.csv",
+    "summary_by_risk_label_csv": "data/experiments/sample_all_quantity_variants_main5/reports/risk_label_summary.csv"
+  },
+  "collection": {
+    "workers": 2,
+    "sleep_sec": 1.0,
+    "max_retries": 3,
+    "temperature": 0.0,
+    "max_tokens": 768,
+    "timeout_sec": 240.0,
+    "resume": false,
+    "max_prompts": 0,
+    "system_prompt": "",
+    "api_env_var": "SILICONFLOW_API_KEY"
+  },
+  "validation": {
+    "concurrency_limit": 60,
+    "request_timeout_sec": 12.0,
+    "batch_size": 200,
+    "proxy_url": "http://127.0.0.1:7890",
+    "allow_direct": true,
+    "allow_proxy_fallback": true,
+    "source_fields": [
+      "response"
+    ],
+    "enable_domain_intel": true,
+    "use_dns_resolver": false,
+    "use_rdap": false,
+    "rdap_timeout_sec": 4.0
+  },
+  "metadata": {
+    "lineup": "main5",
+    "pricing_checked_at": "2026-03-30",
+    "pricing_source": "https://siliconflow.cn/pricing",
+    "dataset_split": "quantity_variants",
+    "dataset_note": "Large recommendation-oriented quantity-ablation prompt pool with 3/5/10 target_count variants."
+  }
+}

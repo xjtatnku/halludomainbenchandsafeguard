@@ -1,51 +1,44 @@
-# Experiment Configs
+# 实验配置说明
 
-`main5.core.v1.json`
+当前项目默认只把两个最外侧目录数据集视为主数据集：
 
-- 5-model main leaderboard on the targeted core split
-- best for primary model ranking under budget constraints
-- uses `model_selection.lineup = main5`
-- defaults to `validation_profile = baseline_http`
+- `../new_dataset.json`
+- `../sample_all_quantity_variants.json`
 
-`main5.full.v1.json`
+其余位于 `data/datasets/` 下的历史数据集和示例数据集仍保留为兼容资产，但不再作为团队后续主实验入口。
 
-- 5-model main leaderboard on `core + stress + open`
-- best for the broader paper table after the core run is stable
-- uses `model_selection.lineup = main5`
-- defaults to `validation_profile = baseline_http`
+## 当前推荐配置
 
-`main5.core.dns_enriched.v1.json`
+### `new_dataset.main5.v1.json`
 
-- same lineup as `main5.core.v1.json`
-- switches validation to `dns_enriched`
-- use after the starter truth bundle has matured enough to justify DNS record enrichment
+- 使用最外侧 `new_dataset.json`
+- 使用 `main5` 五模型编组
+- 适合作为旧版中文综合数据集的标准复现实验
 
-`ablation.kimi_mode.core.v1.json`
+### `new_dataset.main4_no_ernie.v1.json`
 
-- compare `Kimi-K2-Instruct-0905` vs `Kimi-K2-Thinking`
+- 使用最外侧 `new_dataset.json`
+- 使用 `main4_no_ernie` 四模型稳定编组
+- 当 `ERNIE` 调用不稳定时优先使用
 
-`ablation.deepseek_reasoning.core.v1.json`
+### `sample_all_quantity_variants.main5.v1.json`
 
-- compare `DeepSeek-V3.2` vs `DeepSeek-R1`
+- 使用最外侧 `sample_all_quantity_variants.json`
+- 使用 `main5` 五模型编组
+- 适合做推荐数量 `3 / 5 / 10` 对域名风险影响的主实验
 
-`ablation.qwen_scale.core.v1.json`
+### `sample_all_quantity_variants.main4_no_ernie.v1.json`
 
-- compare a large and a smaller Qwen 3.5 model
+- 使用最外侧 `sample_all_quantity_variants.json`
+- 使用 `main4_no_ernie` 四模型稳定编组
+- 当前最推荐的数量消融实验入口
 
-`ablation.glm_generation.core.v1.json`
+## 使用原则
 
-- compare `GLM-4.6` vs `GLM-5`
-
-`legacy330.highrisk_targeted.main5.v1.json`
-
-- focused high-risk subset over `legacy330`
-- uses `validation_profile = dns_enriched`
-
-`legacy330.highrisk_targeted.main5.rdap_curated.v1.json`
-
-- RDAP-enabled variant for the curated high-risk subset
-- only use after the focused truth bundle has been manually reviewed and stabilized
-
-Each experiment writes outputs under `data/experiments/<experiment_name>/...`.
-
-Team-shared experiment configs should use `model_registry_path + model_selection.lineup` as the single source of truth for model selection. Future 10-model expansion should be done by editing the registry and lineup selection first, not by duplicating collection code or maintaining parallel `models` arrays.
+- 团队共享实验优先使用 `model_registry_path + model_selection.lineup`
+- 新实验优先从最外侧两个数据集出发，不再新增第三套主数据集
+- 对 `sample_all_quantity_variants.json`，应重点查看：
+  - `target_count_summary.csv`
+  - `model_summary.csv`
+  - `response_report.csv`
+  - `candidate_report.csv`

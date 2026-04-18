@@ -5,12 +5,9 @@ from pathlib import Path
 
 from .config import BenchmarkConfig, load_config
 from .dataset import load_prompt_records, summarize_prompts, validate_prompt_records, write_dataset_bundle_template
-from .dataset_variants import derive_dataset_subset
-from .legacy_migration import write_migrated_legacy_dataset
-from .legacy_truth_assets import write_legacy330_highrisk_truth_bundle
+from .dataset_variants import deduplicate_dataset, derive_dataset_subset
 from .models import load_model_registry
 from .pipeline import collect_responses, generate_reports, run_full_benchmark, score_responses, verify_responses
-from .starter_assets import write_starter_assets
 from .taxonomy import write_taxonomy_template
 from .truth import GroundTruthIndex, summarize_truth_index, write_truth_template
 from .utils import read_jsonl
@@ -131,32 +128,6 @@ def build_parser() -> argparse.ArgumentParser:
     taxonomy_parser = subparsers.add_parser("bootstrap-taxonomy", help="Write a prompt/scenario taxonomy template")
     taxonomy_parser.add_argument("--output", type=Path, default=Path("data/taxonomy/scenario_taxonomy.template.json"))
 
-    starter_parser = subparsers.add_parser(
-        "bootstrap-starter-assets",
-        help="Write starter truth, benchmark datasets, and experiment configs",
-    )
-    starter_parser.add_argument("--root", type=Path, default=Path("."))
-
-    legacy_truth_parser = subparsers.add_parser(
-        "bootstrap-legacy330-highrisk-truth",
-        help="Write a focused truth bundle for the legacy330 high-risk targeted subset",
-    )
-    legacy_truth_parser.add_argument("--root", type=Path, default=Path("."))
-    legacy_truth_parser.add_argument("--output", type=Path, default=Path("data/ground_truth/entities.legacy330.highrisk.v1.json"))
-
-    migrate_parser = subparsers.add_parser(
-        "migrate-legacy-dataset",
-        help="Upgrade an old prompt-only dataset into the richer benchmark schema",
-    )
-    migrate_parser.add_argument("--input", type=Path, required=True)
-    migrate_parser.add_argument(
-        "--output",
-        type=Path,
-        default=Path("data/datasets/legacy.migrated.json"),
-    )
-    migrate_parser.add_argument("--dataset-name", type=str, default="HalluDomainBench Legacy Migrated")
-    migrate_parser.add_argument("--dataset-version", type=str, default="0.3.0")
-
     subset_parser = subparsers.add_parser(
         "derive-dataset-subset",
         help="Create a filtered benchmark dataset bundle from an existing dataset",
@@ -168,6 +139,14 @@ def build_parser() -> argparse.ArgumentParser:
     subset_parser.add_argument("--evaluation-mode", action="append", default=[])
     subset_parser.add_argument("--intent", action="append", default=[])
     subset_parser.add_argument("--require-expected-entity", action="store_true")
+
+    dedup_parser = subparsers.add_parser(
+        "deduplicate-dataset",
+        help="Write a deduplicated JSON dataset without modifying the original file",
+    )
+    dedup_parser.add_argument("--input", type=Path, required=True)
+    dedup_parser.add_argument("--output", type=Path, required=True)
+    dedup_parser.add_argument("--dedup-key", type=str, default="prompt")
     return parser
 
 
@@ -271,34 +250,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Wrote taxonomy template -> {output_path}")
         return 0
 
-    if args.command == "bootstrap-starter-assets":
-        root_dir = _resolve_optional_path(config.root_dir, args.root) or config.root_dir
-        output_map = write_starter_assets(root_dir)
-        print("Wrote starter assets:")
-        for key, value in sorted(output_map.items()):
-            print(f"- {key}: {value}")
-        return 0
-
-    if args.command == "bootstrap-legacy330-highrisk-truth":
-        root_dir = _resolve_optional_path(config.root_dir, args.root) or config.root_dir
-        output_path = _resolve_optional_path(config.root_dir, args.output) or args.output
-        written = write_legacy330_highrisk_truth_bundle(root_dir, output_path=output_path)
-        print(f"Wrote legacy330 high-risk truth bundle -> {written}")
-        return 0
-
-    if args.command == "migrate-legacy-dataset":
-        input_path = _resolve_optional_path(config.root_dir, args.input) or args.input
-        output_path = _resolve_optional_path(config.root_dir, args.output) or args.output
-        bundle = write_migrated_legacy_dataset(
-            input_path,
-            output_path,
-            dataset_name=args.dataset_name,
-            dataset_version=args.dataset_version,
-        )
-        print(f"Wrote migrated dataset -> {output_path}")
-        print(f"Records: {len(bundle.get('records', []))}")
-        return 0
-
     if args.command == "derive-dataset-subset":
         input_path = _resolve_optional_path(config.root_dir, args.input) or args.input
         output_path = _resolve_optional_path(config.root_dir, args.output) or args.output
@@ -313,6 +264,17 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(f"Wrote derived dataset -> {output_path}")
         print(f"Records: {len(bundle.get('records', []))}")
+        return 0
+
+    if args.command == "deduplicate-dataset":
+        input_path = _resolve_optional_path(config.root_dir, args.input) or args.input
+        output_path = _resolve_optional_path(config.root_dir, args.output) or args.output
+        summary = deduplicate_dataset(
+            input_path,
+            output_path,
+            dedup_key=args.dedup_key,
+        )
+        print(summary)
         return 0
 
     parser.error(f"Unhandled command: {args.command}")

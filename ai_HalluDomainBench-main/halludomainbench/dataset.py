@@ -57,6 +57,22 @@ def _as_list(value) -> list[str]:
     return [str(value).strip()]
 
 
+def _as_optional_int(value) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return int(value)
+    if isinstance(value, int):
+        return value
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return int(text)
+    except ValueError:
+        return None
+
+
 def _normalize_row(index: int, row: dict, dataset_meta: dict | None = None) -> PromptRecord:
     dataset_meta = dataset_meta or {}
     prompt = str(row.get("prompt") or row.get("question") or "").strip()
@@ -70,6 +86,9 @@ def _normalize_row(index: int, row: dict, dataset_meta: dict | None = None) -> P
     expected_entry_types = _as_list(row.get("expected_entry_types"))
     if not expected_entry_types:
         expected_entry_types = default_expected_entry_types(intent)
+    expected_count = _as_optional_int(row.get("expected_count"))
+    if expected_count is None:
+        expected_count = _as_optional_int(row.get("target_count"))
     evaluation_mode = str(
         row.get("evaluation_mode")
         or infer_evaluation_mode(intent=intent, expected_entity=str(expected_entity or "") or None)
@@ -129,7 +148,7 @@ def _normalize_row(index: int, row: dict, dataset_meta: dict | None = None) -> P
         urgency=str(row.get("urgency") or "low"),
         expected_entity=str(expected_entity) if expected_entity is not None else None,
         expected_entry_types=expected_entry_types,
-        expected_count=int(row["expected_count"]) if row.get("expected_count") is not None else None,
+        expected_count=expected_count,
         tags=tags,
         meta=meta,
     )
@@ -245,6 +264,7 @@ def summarize_prompts(prompts: list[PromptRecord]) -> dict[str, dict[str, int] |
     by_risk_tier: dict[str, int] = {}
     by_prompt_family: dict[str, int] = {}
     by_prompt_style: dict[str, int] = {}
+    by_expected_count: dict[str, int] = {}
     targeted_with_entity = 0
     targeted_without_entity = 0
     expected_entities: set[str] = set()
@@ -256,6 +276,9 @@ def summarize_prompts(prompts: list[PromptRecord]) -> dict[str, dict[str, int] |
         by_risk_tier[prompt.risk_tier] = by_risk_tier.get(prompt.risk_tier, 0) + 1
         by_prompt_family[prompt.prompt_family] = by_prompt_family.get(prompt.prompt_family, 0) + 1
         by_prompt_style[prompt.prompt_style] = by_prompt_style.get(prompt.prompt_style, 0) + 1
+        if prompt.expected_count is not None:
+            key = str(prompt.expected_count)
+            by_expected_count[key] = by_expected_count.get(key, 0) + 1
         if prompt.evaluation_mode == "single_target":
             if prompt.expected_entity:
                 targeted_with_entity += 1
@@ -271,6 +294,7 @@ def summarize_prompts(prompts: list[PromptRecord]) -> dict[str, dict[str, int] |
         "by_risk_tier": dict(sorted(by_risk_tier.items())),
         "by_prompt_family": dict(sorted(by_prompt_family.items())),
         "by_prompt_style": dict(sorted(by_prompt_style.items())),
+        "by_expected_count": dict(sorted(by_expected_count.items(), key=lambda item: int(item[0]))),
         "single_target_with_expected_entity": targeted_with_entity,
         "single_target_missing_expected_entity": targeted_without_entity,
         "unique_expected_entities": len(expected_entities),

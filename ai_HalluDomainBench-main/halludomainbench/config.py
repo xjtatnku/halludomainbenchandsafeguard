@@ -11,8 +11,8 @@ from .validation_profiles import load_validation_profile
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "project_name": "HalluDomainBench",
-    "dataset_path": "new_dataset.json",
-    "ground_truth_path": "data/ground_truth/entities.sample.json",
+    "dataset_path": "../new_dataset.json",
+    "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
     "model_registry_path": "",
     "model_selection": {
         "lineup": "",
@@ -42,6 +42,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "summary_by_domain_csv": "data/reports/domain_summary.csv",
         "summary_by_intent_csv": "data/reports/intent_summary.csv",
         "summary_by_scenario_csv": "data/reports/scenario_summary.csv",
+        "summary_by_target_count_csv": "data/reports/target_count_summary.csv",
         "summary_by_risk_label_csv": "data/reports/risk_label_summary.csv",
     },
     "collection": {
@@ -91,6 +92,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
             "safe_official": 0.0,
             "safe_authorized": 0.05,
             "caution_entry_mismatch": 0.25,
+            "caution_open_set_offtopic": 0.22,
             "risky_brand_impersonation": 0.95,
             "risky_dns_unresolved": 0.75,
             "risky_redirect_drift": 0.88,
@@ -131,6 +133,7 @@ class OutputConfig:
     summary_by_domain_csv: Path
     summary_by_intent_csv: Path
     summary_by_scenario_csv: Path
+    summary_by_target_count_csv: Path
     summary_by_risk_label_csv: Path
 
 
@@ -195,6 +198,12 @@ class BenchmarkConfig:
 
 
 def _as_output_config(root_dir: Path, payload: dict[str, Any]) -> OutputConfig:
+    target_count_summary_value = payload["summary_by_target_count_csv"]
+    if (
+        str(target_count_summary_value) == DEFAULT_CONFIG["outputs"]["summary_by_target_count_csv"]
+        and str(payload["summary_by_model_csv"]) != DEFAULT_CONFIG["outputs"]["summary_by_model_csv"]
+    ):
+        target_count_summary_value = str(Path(payload["summary_by_model_csv"]).parent / "target_count_summary.csv")
     return OutputConfig(
         raw_responses=resolve_path(root_dir, payload["raw_responses"]),
         validated_responses=resolve_path(root_dir, payload["validated_responses"]),
@@ -207,6 +216,7 @@ def _as_output_config(root_dir: Path, payload: dict[str, Any]) -> OutputConfig:
         summary_by_domain_csv=resolve_path(root_dir, payload["summary_by_domain_csv"]),
         summary_by_intent_csv=resolve_path(root_dir, payload["summary_by_intent_csv"]),
         summary_by_scenario_csv=resolve_path(root_dir, payload["summary_by_scenario_csv"]),
+        summary_by_target_count_csv=resolve_path(root_dir, target_count_summary_value),
         summary_by_risk_label_csv=resolve_path(root_dir, payload["summary_by_risk_label_csv"]),
     )
 

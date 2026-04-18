@@ -1,0 +1,13 @@
+**/__pycache__/
+**/*.py[cod]
+
+ai_HalluDomainBench-main/configs/local.secrets.json
+SafeEntryGuard/configs/local.secrets.json
+
+SafeEntryGuard/outputs/
+
+ai_HalluDomainBench-main/data/response/*.jsonl
+ai_HalluDomainBench-main/data/response/*.csv
+ai_HalluDomainBench-main/data/reports/*.csv
+ai_HalluDomainBench-main/data/experiments/*/response/*.jsonl
+ai_HalluDomainBench-main/data/experiments/*/reports/*.csv
