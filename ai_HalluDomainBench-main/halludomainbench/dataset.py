@@ -10,14 +10,13 @@ from .utils import read_json
 
 CHINESE_RE = re.compile(r"[\u4e00-\u9fff]")
 
-INTENT_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
-    ("login_entry", ("登录", "登陆", "signin", "sign in", "log in", "账号入口", "账号中心")),
-    ("payment_entry", ("支付", "付款", "充值", "贷款", "借款", "银行", "信用卡", "wallet", "pay", "exchange")),
-    ("download_entry", ("下载", "安装", "文档", "docs", "sdk", "api", "插件", "客户端")),
-    ("support_entry", ("客服", "工单", "帮助中心", "support", "help center", "售后")),
-    ("official_entry", ("官网", "官方网站", "官网地址", "网址", "网站是", "官方站点", "official website")),
-    ("recommendation", ("推荐", "有哪些", "给我一些", "有没有", "哪些网站", "哪些平台", "platforms", "recommend")),
-]
+LOGIN_KEYWORDS = ("登录", "登陆", "signin", "sign in", "log in", "账号入口", "账号中心")
+DOWNLOAD_KEYWORDS = ("下载", "安装", "文档", "docs", "sdk", "api", "插件", "客户端")
+SUPPORT_KEYWORDS = ("客服", "工单", "帮助中心", "support", "help center", "售后")
+OFFICIAL_STRONG_KEYWORDS = ("官网", "官方网站", "官网地址", "官方网址", "官方站点", "official website")
+OFFICIAL_WEAK_KEYWORDS = ("网址", "网站是")
+PAYMENT_KEYWORDS = ("支付", "付款", "充值", "贷款", "借款", "银行", "信用卡", "wallet", "pay", "exchange")
+RECOMMENDATION_KEYWORDS = ("推荐", "有哪些", "给我一些", "有没有", "哪些网站", "哪些平台", "platforms", "recommend")
 
 
 def infer_language(prompt: str) -> str:
@@ -26,9 +25,20 @@ def infer_language(prompt: str) -> str:
 
 def infer_intent(prompt: str) -> str:
     lowered = prompt.lower()
-    for intent, keywords in INTENT_PATTERNS:
-        if any(keyword.lower() in lowered for keyword in keywords):
-            return intent
+    if any(keyword.lower() in lowered for keyword in LOGIN_KEYWORDS):
+        return "login_entry"
+    if any(keyword.lower() in lowered for keyword in SUPPORT_KEYWORDS):
+        return "support_entry"
+    if any(keyword.lower() in lowered for keyword in DOWNLOAD_KEYWORDS):
+        return "download_entry"
+    if any(keyword.lower() in lowered for keyword in OFFICIAL_STRONG_KEYWORDS):
+        return "official_entry"
+    if any(keyword.lower() in lowered for keyword in PAYMENT_KEYWORDS):
+        return "payment_entry"
+    if any(keyword.lower() in lowered for keyword in RECOMMENDATION_KEYWORDS):
+        return "recommendation"
+    if any(keyword.lower() in lowered for keyword in OFFICIAL_WEAK_KEYWORDS):
+        return "official_entry"
     return "resource_navigation"
 
 
@@ -73,6 +83,72 @@ def _as_optional_int(value) -> int | None:
         return None
 
 
+def _normalize_overlay_key(value: str) -> str:
+    return str(value or "").strip()
+
+
+def _load_dataset_overlay(path: Path | None) -> tuple[dict[str, dict], dict[str, dict]]:
+    if path is None or not path.exists():
+        return {}, {}
+
+    payload = read_json(path)
+    prompt_id_overrides: dict[str, dict] = {}
+    prompt_text_overrides: dict[str, dict] = {}
+
+    if isinstance(payload, dict):
+        entries = payload.get("records") or payload.get("overrides") or []
+    elif isinstance(payload, list):
+        entries = payload
+    else:
+        entries = []
+
+    for item in entries:
+        if not isinstance(item, dict):
+            continue
+        patch = {
+            key: value
+            for key, value in item.items()
+            if key not in {"prompt_id", "prompt", "source_prompt", "notes"}
+        }
+        prompt_id = _normalize_overlay_key(item.get("prompt_id"))
+        prompt_text = _normalize_overlay_key(item.get("prompt") or item.get("source_prompt"))
+        if prompt_id:
+            prompt_id_overrides[prompt_id] = patch
+        if prompt_text:
+            prompt_text_overrides[prompt_text] = patch
+
+    return prompt_id_overrides, prompt_text_overrides
+
+
+def _apply_overlay(rows: list[dict], overlay_path: Path | None) -> list[dict]:
+    prompt_id_overrides, prompt_text_overrides = _load_dataset_overlay(overlay_path)
+    if not prompt_id_overrides and not prompt_text_overrides:
+        return rows
+
+    merged_rows: list[dict] = []
+    for index, row in enumerate(rows, start=1):
+        if not isinstance(row, dict):
+            merged_rows.append(row)
+            continue
+        prompt_id = _normalize_overlay_key(row.get("prompt_id") or f"TEST_{index:03d}")
+        prompt_candidates = [
+            _normalize_overlay_key(row.get("prompt")),
+            _normalize_overlay_key(row.get("question")),
+            _normalize_overlay_key(row.get("source_prompt")),
+        ]
+        patch = prompt_id_overrides.get(prompt_id)
+        if patch is None:
+            for prompt_text in prompt_candidates:
+                if prompt_text and prompt_text in prompt_text_overrides:
+                    patch = prompt_text_overrides[prompt_text]
+                    break
+        if patch:
+            merged_rows.append({**row, **patch})
+        else:
+            merged_rows.append(row)
+    return merged_rows
+
+
 def _normalize_row(index: int, row: dict, dataset_meta: dict | None = None) -> PromptRecord:
     dataset_meta = dataset_meta or {}
     prompt = str(row.get("prompt") or row.get("question") or "").strip()
@@ -91,7 +167,7 @@ def _normalize_row(index: int, row: dict, dataset_meta: dict | None = None) -> P
         expected_count = _as_optional_int(row.get("target_count"))
     evaluation_mode = str(
         row.get("evaluation_mode")
-        or infer_evaluation_mode(intent=intent, expected_entity=str(expected_entity or "") or None)
+        or infer_evaluation_mode(intent=intent, expected_entity=str(expected_entity or "") or None, prompt=prompt)
     )
     tags = _as_list(row.get("tags"))
     meta = {
@@ -154,7 +230,7 @@ def _normalize_row(index: int, row: dict, dataset_meta: dict | None = None) -> P
     )
 
 
-def load_prompt_records(path: Path) -> list[PromptRecord]:
+def load_prompt_records(path: Path, overlay_path: Path | None = None) -> list[PromptRecord]:
     if path.suffix.lower() != ".json":
         raise ValueError(
             f"Dataset must be a JSON file (.json). CSV and ad-hoc stitched datasets are no longer supported: {path}"
@@ -172,6 +248,7 @@ def load_prompt_records(path: Path) -> list[PromptRecord]:
     if not isinstance(payload, list):
         raise ValueError(f"Dataset must be a list or a bundle with records/prompts, got {type(payload)!r}")
 
+    payload = _apply_overlay(payload, overlay_path)
     records = [_normalize_row(index, row, dataset_meta) for index, row in enumerate(payload, start=1)]
     if not records:
         raise ValueError(f"No usable prompts found in dataset: {path}")

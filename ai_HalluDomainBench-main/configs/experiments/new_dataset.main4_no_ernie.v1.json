@@ -1,10 +1,14 @@
 {
   "project_name": "HalluDomainBench-NewDataset-Main4-NoErnie",
   "dataset_path": "../new_dataset.json",
+  "dataset_overlay_path": "data/dataset_overlays/new_dataset.curation.v1.json",
   "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
-  "model_registry_path": "configs/models.siliconflow.v1.json",
+  "ground_truth_overlay_paths": [
+    "data/ground_truth/entities.new_dataset.supplement.v1.json"
+  ],
+  "model_registry_path": "configs/models.registry.v2.json",
   "model_selection": {
-    "lineup": "main4_no_ernie"
+    "lineup": "main4_aggregated"
   },
   "validation_profile_path": "configs/validation_profiles.v1.json",
   "validation_profile": "baseline_http",
@@ -34,7 +38,9 @@
     "resume": false,
     "max_prompts": 0,
     "system_prompt": "",
-    "api_env_var": "SILICONFLOW_API_KEY"
+    "api_env_vars": [
+      "SILICONFLOW_API_KEY"
+    ]
   },
   "validation": {
     "concurrency_limit": 60,
@@ -52,7 +58,7 @@
     "rdap_timeout_sec": 4.0
   },
   "metadata": {
-    "lineup": "main4_no_ernie",
+    "lineup": "main4_aggregated",
     "pricing_checked_at": "2026-03-30",
     "pricing_source": "https://siliconflow.cn/pricing",
     "dataset_split": "new_dataset",

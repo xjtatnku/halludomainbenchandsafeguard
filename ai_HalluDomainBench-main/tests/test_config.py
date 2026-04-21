@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from halludomainbench.config import load_config
+from halludomainbench.utils import PROJECT_ROOT
 
 
 class ConfigTests(unittest.TestCase):
@@ -56,6 +57,80 @@ class ConfigTests(unittest.TestCase):
         self.assertFalse(config.validation.use_rdap)
         self.assertEqual(config.validation.concurrency_limit, 20)
         self.assertEqual(config.validation.batch_size, 33)
+
+    def test_load_config_normalizes_api_env_vars(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            config_path = root / "config.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "project_name": "Test",
+                        "dataset_path": "new_dataset.json",
+                        "ground_truth_path": "data/ground_truth/entities.sample.json",
+                        "collection": {
+                            "api_env_vars": ["SILICONFLOW_API_KEY", "BAIDU_QIANFAN_API_KEY", "SILICONFLOW_API_KEY"]
+                        }
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            config = load_config(config_path)
+
+        self.assertEqual(config.collection.api_env_vars, ("SILICONFLOW_API_KEY", "BAIDU_QIANFAN_API_KEY"))
+
+    def test_load_config_resolves_dataset_overlay_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            config_path = root / "config.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "project_name": "Test",
+                        "dataset_path": "new_dataset.json",
+                        "dataset_overlay_path": "data/overlays/new_dataset.overlay.json",
+                        "ground_truth_path": "data/ground_truth/entities.sample.json",
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            config = load_config(config_path)
+
+        self.assertEqual(config.dataset_overlay_path, PROJECT_ROOT / "data/overlays/new_dataset.overlay.json")
+
+    def test_load_config_resolves_ground_truth_overlay_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            config_path = root / "config.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "project_name": "Test",
+                        "dataset_path": "new_dataset.json",
+                        "ground_truth_path": "data/ground_truth/entities.sample.json",
+                        "ground_truth_overlay_paths": [
+                            "data/ground_truth/entities.extra.json",
+                            "data/ground_truth/entities.gov.json",
+                        ],
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            config = load_config(config_path)
+
+        self.assertEqual(
+            config.ground_truth_overlay_paths,
+            (
+                PROJECT_ROOT / "data/ground_truth/entities.extra.json",
+                PROJECT_ROOT / "data/ground_truth/entities.gov.json",
+            ),
+        )
 
 
 if __name__ == "__main__":

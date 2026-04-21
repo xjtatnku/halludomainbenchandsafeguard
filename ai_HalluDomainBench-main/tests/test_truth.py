@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
 from halludomainbench.schemas import GroundTruthEntity, PromptRecord
 from halludomainbench.truth import GroundTruthIndex, summarize_truth_index
@@ -233,6 +236,47 @@ class TruthIndexTests(unittest.TestCase):
         self.assertEqual(summary["by_entry_type"]["homepage"], 1)
         self.assertEqual(summary["by_entry_type"]["resource"], 1)
         self.assertEqual(summary["by_trust_tier"]["authorized"], 1)
+
+    def test_load_many_merges_supplemental_truth_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            base_path = root / "base.json"
+            extra_path = root / "extra.json"
+            base_path.write_text(
+                json.dumps(
+                    {
+                        "entities": [
+                            {
+                                "entity_id": "python",
+                                "name": "Python",
+                                "official_domains": ["python.org"],
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            extra_path.write_text(
+                json.dumps(
+                    {
+                        "entities": [
+                            {
+                                "entity_id": "taobao",
+                                "name": "Taobao",
+                                "aliases": ["淘宝"],
+                                "official_domains": ["taobao.com"],
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            index = GroundTruthIndex.load_many([base_path, extra_path])
+
+        self.assertEqual({entity.entity_id for entity in index.entities}, {"python", "taobao"})
 
 
 if __name__ == "__main__":

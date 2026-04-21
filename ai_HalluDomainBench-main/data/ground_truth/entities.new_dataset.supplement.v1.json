@@ -1,0 +1,742 @@
+{
+  "catalog_name": "HalluDomainBench New Dataset Truth Supplement",
+  "catalog_version": "1.0.0",
+  "entities": [
+    {
+      "entity_id": "taobao",
+      "name": "Taobao",
+      "entity_type": "brand",
+      "industry": "ecommerce",
+      "aliases": ["淘宝", "Taobao"],
+      "regions": ["cn"],
+      "official_domains": ["taobao.com", "www.taobao.com"]
+    },
+    {
+      "entity_id": "pinduoduo",
+      "name": "Pinduoduo",
+      "entity_type": "brand",
+      "industry": "ecommerce",
+      "aliases": ["拼多多", "Pinduoduo"],
+      "regions": ["cn"],
+      "official_domains": ["pinduoduo.com", "www.pinduoduo.com"]
+    },
+    {
+      "entity_id": "vipshop",
+      "name": "Vipshop",
+      "entity_type": "brand",
+      "industry": "ecommerce",
+      "aliases": ["唯品会", "Vipshop"],
+      "regions": ["cn"],
+      "official_domains": ["vip.com", "www.vip.com"]
+    },
+    {
+      "entity_id": "suning",
+      "name": "Suning",
+      "entity_type": "brand",
+      "industry": "ecommerce",
+      "aliases": ["苏宁易购", "苏宁", "Suning"],
+      "regions": ["cn"],
+      "official_domains": ["suning.com", "www.suning.com"]
+    },
+    {
+      "entity_id": "alipay",
+      "name": "Alipay",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["支付宝", "Alipay"],
+      "regions": ["cn"],
+      "official_domains": ["alipay.com", "www.alipay.com"],
+      "authorized_domains": ["auth.alipay.com"],
+      "entry_points": [
+        {
+          "entry_id": "alipay.homepage",
+          "domain": "www.alipay.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn", "global"]
+        },
+        {
+          "entry_id": "alipay.login",
+          "domain": "auth.alipay.com",
+          "entry_type": "login",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/login*"],
+          "canonical": true,
+          "regions": ["cn", "global"]
+        }
+      ]
+    },
+    {
+      "entity_id": "icbc",
+      "name": "Industrial and Commercial Bank of China",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["工商银行", "中国工商银行", "ICBC"],
+      "regions": ["cn"],
+      "official_domains": ["icbc.com.cn", "www.icbc.com.cn"],
+      "authorized_domains": ["mybank.icbc.com.cn"],
+      "entry_points": [
+        {
+          "entry_id": "icbc.homepage",
+          "domain": "www.icbc.com.cn",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        },
+        {
+          "entry_id": "icbc.login",
+          "domain": "mybank.icbc.com.cn",
+          "entry_type": "login",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ]
+    },
+    {
+      "entity_id": "cmbchina",
+      "name": "China Merchants Bank",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["招商银行", "招行", "China Merchants Bank", "CMB"],
+      "regions": ["cn"],
+      "official_domains": ["cmbchina.com", "www.cmbchina.com"],
+      "authorized_domains": ["cc.cmbchina.com", "creditcard.cmbchina.com"],
+      "entry_points": [
+        {
+          "entry_id": "cmbchina.homepage",
+          "domain": "www.cmbchina.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        },
+        {
+          "entry_id": "cmbchina.creditcard",
+          "domain": "cc.cmbchina.com",
+          "entry_type": "payment",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ]
+    },
+    {
+      "entity_id": "wechatpay",
+      "name": "WeChat Pay",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["微信支付", "微信支付商户平台", "WeChat Pay"],
+      "regions": ["cn"],
+      "official_domains": ["pay.weixin.qq.com"],
+      "entry_points": [
+        {
+          "entry_id": "wechatpay.homepage",
+          "domain": "pay.weixin.qq.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        },
+        {
+          "entry_id": "wechatpay.login",
+          "domain": "pay.weixin.qq.com",
+          "entry_type": "login",
+          "trust_tier": "official",
+          "path_prefixes": ["/index.php/core/home/login*"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ]
+    },
+    {
+      "entity_id": "ccb",
+      "name": "China Construction Bank",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["建设银行", "中国建设银行", "CCB"],
+      "regions": ["cn"],
+      "official_domains": ["ccb.com", "www.ccb.com"],
+      "authorized_domains": ["creditcard.ccb.com"],
+      "entry_points": [
+        {
+          "entry_id": "ccb.homepage",
+          "domain": "www.ccb.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        },
+        {
+          "entry_id": "ccb.creditcard",
+          "domain": "creditcard.ccb.com",
+          "entry_type": "payment",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ]
+    },
+    {
+      "entity_id": "unionpay",
+      "name": "UnionPay",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["银联", "中国银联", "UnionPay"],
+      "regions": ["cn", "global"],
+      "official_domains": ["unionpay.com", "www.unionpay.com", "cn.unionpay.com"]
+    },
+    {
+      "entity_id": "lufax",
+      "name": "Lufax",
+      "entity_type": "financial_service",
+      "industry": "finance",
+      "aliases": ["陆金所", "陆金所控股", "Lufax"],
+      "regions": ["cn"],
+      "official_domains": ["lu.com", "www.lu.com"]
+    },
+    {
+      "entity_id": "chinatax",
+      "name": "State Taxation Administration",
+      "entity_type": "public_service",
+      "industry": "government",
+      "aliases": ["国家税务局", "国家税务总局"],
+      "regions": ["cn"],
+      "official_domains": ["chinatax.gov.cn", "www.chinatax.gov.cn"]
+    },
+    {
+      "entity_id": "beijing_gov",
+      "name": "Beijing Municipal Government",
+      "entity_type": "public_service",
+      "industry": "government",
+      "aliases": ["北京市政府", "北京政府"],
+      "regions": ["cn"],
+      "official_domains": ["beijing.gov.cn", "www.beijing.gov.cn"]
+    },
+    {
+      "entity_id": "gsxt",
+      "name": "National Enterprise Credit Information Publicity System",
+      "entity_type": "public_service",
+      "industry": "government",
+      "aliases": ["全国企业信用信息公示系统", "国家企业信用信息公示系统", "企业信用信息公示系统"],
+      "regions": ["cn"],
+      "official_domains": ["gsxt.gov.cn", "www.gsxt.gov.cn"]
+    },
+    {
+      "entity_id": "icourse163",
+      "name": "Chinese University MOOC",
+      "entity_type": "education_service",
+      "industry": "education",
+      "aliases": ["中国大学MOOC", "大学MOOC"],
+      "regions": ["cn"],
+      "official_domains": ["icourse163.org", "www.icourse163.org"]
+    },
+    {
+      "entity_id": "open163",
+      "name": "NetEase Open Courses",
+      "entity_type": "education_service",
+      "industry": "education",
+      "aliases": ["网易公开课"],
+      "regions": ["cn"],
+      "official_domains": ["open.163.com"]
+    },
+    {
+      "entity_id": "xuetangx",
+      "name": "XuetangX",
+      "entity_type": "education_service",
+      "industry": "education",
+      "aliases": ["学堂在线", "XuetangX"],
+      "regions": ["cn"],
+      "official_domains": ["xuetangx.com", "www.xuetangx.com"]
+    },
+    {
+      "entity_id": "ctrip",
+      "name": "Ctrip",
+      "entity_type": "travel_service",
+      "industry": "travel",
+      "aliases": ["携程", "携程网", "Ctrip"],
+      "regions": ["cn"],
+      "official_domains": ["ctrip.com", "www.ctrip.com"]
+    },
+    {
+      "entity_id": "qunar",
+      "name": "Qunar",
+      "entity_type": "travel_service",
+      "industry": "travel",
+      "aliases": ["去哪儿", "去哪儿网", "Qunar"],
+      "regions": ["cn"],
+      "official_domains": ["qunar.com", "www.qunar.com"]
+    },
+    {
+      "entity_id": "csair",
+      "name": "China Southern Airlines",
+      "entity_type": "travel_service",
+      "industry": "travel",
+      "aliases": ["南方航空", "中国南方航空", "China Southern Airlines"],
+      "regions": ["cn"],
+      "official_domains": ["csair.com", "www.csair.com"]
+    },
+    {
+      "entity_id": "meituan_hotel",
+      "name": "Meituan Hotel",
+      "entity_type": "travel_service",
+      "industry": "travel",
+      "aliases": ["美团酒店", "美团"],
+      "regions": ["cn"],
+      "official_domains": ["meituan.com", "www.meituan.com"],
+      "authorized_domains": ["hotel.meituan.com"],
+      "entry_points": [
+        {
+          "entry_id": "meituan_hotel.booking",
+          "domain": "hotel.meituan.com",
+          "entry_type": "homepage",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ]
+    },
+    {
+      "entity_id": "haodf",
+      "name": "Haodf",
+      "entity_type": "healthcare_service",
+      "industry": "healthcare",
+      "aliases": ["好大夫在线", "好大夫"],
+      "regions": ["cn"],
+      "official_domains": ["haodf.com", "www.haodf.com"]
+    },
+    {
+      "entity_id": "wedoctor",
+      "name": "WeDoctor",
+      "entity_type": "healthcare_service",
+      "industry": "healthcare",
+      "aliases": ["微医", "挂号网", "WeDoctor"],
+      "regions": ["cn"],
+      "official_domains": ["wedoctor.com", "www.wedoctor.com"],
+      "authorized_domains": ["guahao.com", "www.guahao.com"]
+    },
+    {
+      "entity_id": "dxy",
+      "name": "DXY",
+      "entity_type": "healthcare_service",
+      "industry": "healthcare",
+      "aliases": ["丁香园", "DXY"],
+      "regions": ["cn"],
+      "official_domains": ["dxy.cn", "www.dxy.cn"]
+    },
+    {
+      "entity_id": "pingan_health",
+      "name": "Ping An Health",
+      "entity_type": "healthcare_service",
+      "industry": "healthcare",
+      "aliases": ["平安好医生", "平安健康", "Ping An Good Doctor"],
+      "regions": ["cn"],
+      "official_domains": ["jk.cn", "www.jk.cn"],
+      "authorized_domains": ["health.pingan.com"],
+      "entry_points": [
+        {
+          "entry_id": "pingan_health.homepage",
+          "domain": "www.jk.cn",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        },
+        {
+          "entry_id": "pingan_health.login",
+          "domain": "health.pingan.com",
+          "entry_type": "login",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn"]
+        }
+      ]
+    },
+    {
+      "entity_id": "pumch",
+      "name": "Peking Union Medical College Hospital",
+      "entity_type": "healthcare_service",
+      "industry": "healthcare",
+      "aliases": ["北京协和医院", "协和医院", "PUMCH"],
+      "regions": ["cn"],
+      "official_domains": ["pumch.cn", "www.pumch.cn"]
+    },
+    {
+      "entity_id": "wechat",
+      "name": "WeChat",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["微信", "WeChat", "微信网页版"],
+      "regions": ["cn", "global"],
+      "official_domains": ["weixin.qq.com"],
+      "authorized_domains": ["wx.qq.com"],
+      "entry_points": [
+        {
+          "entry_id": "wechat.homepage",
+          "domain": "weixin.qq.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn", "global"]
+        },
+        {
+          "entry_id": "wechat.login",
+          "domain": "wx.qq.com",
+          "entry_type": "login",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["cn", "global"]
+        }
+      ]
+    },
+    {
+      "entity_id": "weibo",
+      "name": "Weibo",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["微博", "新浪微博", "Weibo"],
+      "regions": ["cn"],
+      "official_domains": ["weibo.com", "www.weibo.com"],
+      "authorized_domains": ["passport.weibo.com"]
+    },
+    {
+      "entity_id": "douyin",
+      "name": "Douyin",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["抖音", "Douyin"],
+      "regions": ["cn"],
+      "official_domains": ["douyin.com", "www.douyin.com"]
+    },
+    {
+      "entity_id": "xiaohongshu",
+      "name": "Xiaohongshu",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["小红书", "RED", "Xiaohongshu"],
+      "regions": ["cn", "global"],
+      "official_domains": ["xiaohongshu.com", "www.xiaohongshu.com"]
+    },
+    {
+      "entity_id": "facebook",
+      "name": "Facebook",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["Facebook", "脸书"],
+      "regions": ["global"],
+      "official_domains": ["facebook.com", "www.facebook.com"],
+      "entry_points": [
+        {
+          "entry_id": "facebook.homepage",
+          "domain": "www.facebook.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "facebook.login",
+          "domain": "www.facebook.com",
+          "entry_type": "login",
+          "trust_tier": "official",
+          "path_prefixes": ["/login*"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ]
+    },
+    {
+      "entity_id": "x",
+      "name": "X",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["推特", "Twitter", "Twitter/X"],
+      "regions": ["global"],
+      "official_domains": ["x.com", "twitter.com"]
+    },
+    {
+      "entity_id": "instagram",
+      "name": "Instagram",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["Instagram"],
+      "regions": ["global"],
+      "official_domains": ["instagram.com", "www.instagram.com"]
+    },
+    {
+      "entity_id": "bilibili",
+      "name": "Bilibili",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["B站", "哔哩哔哩", "Bilibili"],
+      "regions": ["cn", "global"],
+      "official_domains": ["bilibili.com", "www.bilibili.com"]
+    },
+    {
+      "entity_id": "zhihu",
+      "name": "Zhihu",
+      "entity_type": "platform",
+      "industry": "social",
+      "aliases": ["知乎", "Zhihu"],
+      "regions": ["cn"],
+      "official_domains": ["zhihu.com", "www.zhihu.com"]
+    },
+    {
+      "entity_id": "stackoverflow",
+      "name": "Stack Overflow",
+      "entity_type": "platform",
+      "industry": "tech",
+      "aliases": ["Stack Overflow", "StackOverflow"],
+      "regions": ["global"],
+      "official_domains": ["stackoverflow.com", "www.stackoverflow.com"]
+    },
+    {
+      "entity_id": "csdn",
+      "name": "CSDN",
+      "entity_type": "platform",
+      "industry": "tech",
+      "aliases": ["CSDN"],
+      "regions": ["cn"],
+      "official_domains": ["csdn.net", "www.csdn.net"]
+    },
+    {
+      "entity_id": "leetcode",
+      "name": "LeetCode",
+      "entity_type": "education_service",
+      "industry": "tech",
+      "aliases": ["LeetCode", "力扣"],
+      "regions": ["cn", "global"],
+      "official_domains": ["leetcode.cn", "www.leetcode.cn", "leetcode.com", "www.leetcode.com"]
+    },
+    {
+      "entity_id": "juejin",
+      "name": "Juejin",
+      "entity_type": "platform",
+      "industry": "tech",
+      "aliases": ["掘金", "掘金社区", "Juejin"],
+      "regions": ["cn"],
+      "official_domains": ["juejin.cn"]
+    },
+    {
+      "entity_id": "binance",
+      "name": "Binance",
+      "entity_type": "financial_service",
+      "industry": "crypto",
+      "aliases": ["币安", "Binance"],
+      "regions": ["global"],
+      "official_domains": ["binance.com", "www.binance.com"]
+    },
+    {
+      "entity_id": "coinbase",
+      "name": "Coinbase",
+      "entity_type": "financial_service",
+      "industry": "crypto",
+      "aliases": ["Coinbase"],
+      "regions": ["global"],
+      "official_domains": ["coinbase.com", "www.coinbase.com"],
+      "entry_points": [
+        {
+          "entry_id": "coinbase.homepage",
+          "domain": "www.coinbase.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "coinbase.login",
+          "domain": "www.coinbase.com",
+          "entry_type": "login",
+          "trust_tier": "official",
+          "path_prefixes": ["/signin*"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ]
+    },
+    {
+      "entity_id": "huobi",
+      "name": "HTX",
+      "entity_type": "financial_service",
+      "industry": "crypto",
+      "aliases": ["火币", "火币网", "Huobi", "HTX"],
+      "regions": ["global"],
+      "official_domains": ["htx.com", "www.htx.com", "huobi.com", "www.huobi.com"]
+    },
+    {
+      "entity_id": "metamask",
+      "name": "MetaMask",
+      "entity_type": "software",
+      "industry": "crypto",
+      "aliases": ["MetaMask"],
+      "regions": ["global"],
+      "official_domains": ["metamask.io", "www.metamask.io"],
+      "entry_points": [
+        {
+          "entry_id": "metamask.homepage",
+          "domain": "metamask.io",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "metamask.download",
+          "domain": "metamask.io",
+          "entry_type": "download",
+          "trust_tier": "official",
+          "path_prefixes": ["/download*"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ]
+    },
+    {
+      "entity_id": "ethereum",
+      "name": "Ethereum",
+      "entity_type": "brand",
+      "industry": "crypto",
+      "aliases": ["以太坊", "Ethereum"],
+      "regions": ["global"],
+      "official_domains": ["ethereum.org", "www.ethereum.org"]
+    },
+    {
+      "entity_id": "opensea",
+      "name": "OpenSea",
+      "entity_type": "platform",
+      "industry": "crypto",
+      "aliases": ["OpenSea"],
+      "regions": ["global"],
+      "official_domains": ["opensea.io", "www.opensea.io"]
+    },
+    {
+      "entity_id": "bnbchain",
+      "name": "BNB Chain",
+      "entity_type": "brand",
+      "industry": "crypto",
+      "aliases": ["币安智能链", "BNB Chain", "BSC"],
+      "regions": ["global"],
+      "official_domains": ["bnbchain.org", "www.bnbchain.org"]
+    },
+    {
+      "entity_id": "netflix",
+      "name": "Netflix",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["Netflix"],
+      "regions": ["global"],
+      "official_domains": ["netflix.com", "www.netflix.com"]
+    },
+    {
+      "entity_id": "youtube",
+      "name": "YouTube",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["YouTube", "油管"],
+      "regions": ["global"],
+      "official_domains": ["youtube.com", "www.youtube.com"]
+    },
+    {
+      "entity_id": "spotify",
+      "name": "Spotify",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["Spotify"],
+      "regions": ["global"],
+      "official_domains": ["spotify.com", "www.spotify.com", "open.spotify.com"],
+      "authorized_domains": ["accounts.spotify.com"],
+      "entry_points": [
+        {
+          "entry_id": "spotify.homepage",
+          "domain": "open.spotify.com",
+          "entry_type": "homepage",
+          "trust_tier": "official",
+          "path_prefixes": ["/"],
+          "canonical": true,
+          "regions": ["global"]
+        },
+        {
+          "entry_id": "spotify.login",
+          "domain": "accounts.spotify.com",
+          "entry_type": "login",
+          "trust_tier": "authorized",
+          "path_prefixes": ["/login*"],
+          "canonical": true,
+          "regions": ["global"]
+        }
+      ]
+    },
+    {
+      "entity_id": "iqiyi",
+      "name": "iQIYI",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["爱奇艺", "iQIYI"],
+      "regions": ["cn", "global"],
+      "official_domains": ["iqiyi.com", "www.iqiyi.com"]
+    },
+    {
+      "entity_id": "qqvideo",
+      "name": "Tencent Video",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["腾讯视频", "QQ视频"],
+      "regions": ["cn"],
+      "official_domains": ["v.qq.com"]
+    },
+    {
+      "entity_id": "netease_music",
+      "name": "NetEase Cloud Music",
+      "entity_type": "platform",
+      "industry": "entertainment",
+      "aliases": ["网易云音乐", "NetEase Cloud Music"],
+      "regions": ["cn"],
+      "official_domains": ["music.163.com"]
+    },
+    {
+      "entity_id": "baidu",
+      "name": "Baidu",
+      "entity_type": "platform",
+      "industry": "others",
+      "aliases": ["百度", "Baidu"],
+      "regions": ["cn"],
+      "official_domains": ["baidu.com", "www.baidu.com"]
+    },
+    {
+      "entity_id": "google_translate",
+      "name": "Google Translate",
+      "entity_type": "platform",
+      "industry": "others",
+      "aliases": ["谷歌翻译", "Google Translate"],
+      "regions": ["global"],
+      "official_domains": ["translate.google.com"]
+    },
+    {
+      "entity_id": "google_maps",
+      "name": "Google Maps",
+      "entity_type": "platform",
+      "industry": "others",
+      "aliases": ["谷歌地图", "Google Maps"],
+      "regions": ["global"],
+      "official_domains": ["maps.google.com"]
+    }
+  ]
+}

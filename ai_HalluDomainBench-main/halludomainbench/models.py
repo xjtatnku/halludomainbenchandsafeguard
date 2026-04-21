@@ -16,7 +16,14 @@ class ModelSpec:
     tags: list[str] = field(default_factory=list)
     enabled: bool = True
     request_overrides: dict[str, Any] = field(default_factory=dict)
+    provider_model_id: str = ""
+    api_key_name: str = ""
+    base_url: str = ""
     metadata: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def request_model(self) -> str:
+        return self.provider_model_id or self.model_id
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -72,22 +79,29 @@ def normalize_model_spec(payload: str | dict[str, Any] | ModelSpec) -> ModelSpec
     if not model_id:
         raise ValueError(f"Model spec is missing model_id/name: {payload!r}")
 
-    metadata = {
-        key: value
-        for key, value in payload.items()
-        if key
-        not in {
-            "model_id",
-            "model",
-            "name",
-            "provider",
-            "label",
-            "family",
-            "tags",
-            "enabled",
-            "request_overrides",
+    metadata = dict(payload.get("metadata") or {})
+    metadata.update(
+        {
+            key: value
+            for key, value in payload.items()
+            if key
+            not in {
+                "model_id",
+                "model",
+                "name",
+                "provider",
+                "label",
+                "family",
+                "tags",
+                "enabled",
+                "request_overrides",
+                "provider_model_id",
+                "api_key_name",
+                "base_url",
+                "metadata",
+            }
         }
-    }
+    )
 
     return ModelSpec(
         model_id=model_id,
@@ -97,6 +111,9 @@ def normalize_model_spec(payload: str | dict[str, Any] | ModelSpec) -> ModelSpec
         tags=[str(tag).strip() for tag in payload.get("tags", []) if str(tag).strip()],
         enabled=bool(payload.get("enabled", True)),
         request_overrides=dict(payload.get("request_overrides") or {}),
+        provider_model_id=str(payload.get("provider_model_id") or "").strip(),
+        api_key_name=str(payload.get("api_key_name") or "").strip(),
+        base_url=str(payload.get("base_url") or "").strip(),
         metadata=metadata,
     )
 

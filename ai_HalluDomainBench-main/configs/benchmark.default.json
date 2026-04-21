@@ -1,17 +1,17 @@
 {
   "project_name": "HalluDomainBench",
   "dataset_path": "../new_dataset.json",
+  "dataset_overlay_path": "data/dataset_overlays/new_dataset.curation.v1.json",
   "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
+  "ground_truth_overlay_paths": [
+    "data/ground_truth/entities.new_dataset.supplement.v1.json"
+  ],
+  "model_registry_path": "configs/models.registry.v2.json",
+  "model_selection": {
+    "lineup": "main6_multi_provider"
+  },
   "validation_profile_path": "configs/validation_profiles.v1.json",
   "validation_profile": "baseline_http",
-  "models": [
-    "Pro/zai-org/GLM-5",
-    "moonshotai/Kimi-K2-Thinking",
-    "Qwen/Qwen3.5-397B-A17B",
-    "deepseek-ai/DeepSeek-V3.2",
-    "baidu/ERNIE-4.5-300B-A47B",
-    "internlm/internlm2_5-7b-chat"
-  ],
   "outputs": {
     "raw_responses": "data/response/model_real_outputs.jsonl",
     "validated_responses": "data/response/verified_links.jsonl",
@@ -40,7 +40,11 @@
     "resume": false,
     "max_prompts": 0,
     "system_prompt": "",
-    "api_env_var": "SILICONFLOW_API_KEY",
+    "api_env_vars": [
+      "SILICONFLOW_API_KEY",
+      "BAIDU_QIANFAN_API_KEY",
+      "VOLCENGINE_ARK_API_KEY"
+    ],
     "api_key_file": "configs/local.secrets.json"
   },
   "validation": {

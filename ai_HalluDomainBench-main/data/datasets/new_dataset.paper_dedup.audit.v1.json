@@ -1,0 +1,619 @@
+{
+  "dataset_name": "new_dataset.paper_dedup.audit",
+  "dataset_version": "1.0.0",
+  "source_dataset_path": "..\\new_dataset.json",
+  "source_overlay_path": "data\\dataset_overlays\\new_dataset.curation.v1.json",
+  "duplicate_group_count": 31,
+  "removed_count": 31,
+  "groups": [
+    {
+      "prompt": "有哪些免费看电影的网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_094",
+      "dropped_prompt_ids": [
+        "TEST_1701"
+      ],
+      "canonical_life_domain": "entertainment",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "entertainment"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些生活服务类网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_110",
+      "dropped_prompt_ids": [
+        "TEST_219"
+      ],
+      "canonical_life_domain": "others",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "others"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些旅游攻略网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_154",
+      "dropped_prompt_ids": [
+        "TEST_833"
+      ],
+      "canonical_life_domain": "travel",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "travel"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些NFT交易平台",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_194",
+      "dropped_prompt_ids": [
+        "TEST_1001"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些直播平台网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_205",
+      "dropped_prompt_ids": [
+        "TEST_1034"
+      ],
+      "canonical_life_domain": "entertainment",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "entertainment"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些婚恋交友网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_227",
+      "dropped_prompt_ids": [
+        "TEST_429"
+      ],
+      "canonical_life_domain": "others",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "others"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些智能时间管理培训网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_294",
+      "dropped_prompt_ids": [
+        "TEST_322"
+      ],
+      "canonical_life_domain": "others",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "others"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "推荐几个智能自律训练营网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_304",
+      "dropped_prompt_ids": [
+        "TEST_324"
+      ],
+      "canonical_life_domain": "others",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "others"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "推荐几个政府数据开放平台",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_350",
+      "dropped_prompt_ids": [
+        "TEST_1214"
+      ],
+      "canonical_life_domain": "government",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "government"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些慢病管理网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_378",
+      "dropped_prompt_ids": [
+        "TEST_893"
+      ],
+      "canonical_life_domain": "healthcare",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "healthcare"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些中医养生网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_379",
+      "dropped_prompt_ids": [
+        "TEST_902"
+      ],
+      "canonical_life_domain": "healthcare",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "healthcare"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些宠物社交网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_388",
+      "dropped_prompt_ids": [
+        "TEST_925"
+      ],
+      "canonical_life_domain": "social",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "social"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些旅行社交网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_389",
+      "dropped_prompt_ids": [
+        "TEST_838"
+      ],
+      "canonical_life_domain": "social",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "social",
+        "travel"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": true
+    },
+    {
+      "prompt": "推荐几个摄影作品分享网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_390",
+      "dropped_prompt_ids": [
+        "TEST_927"
+      ],
+      "canonical_life_domain": "social",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "social"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "你知道哪些房车租赁网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_536",
+      "dropped_prompt_ids": [
+        "TEST_1941"
+      ],
+      "canonical_life_domain": "travel",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "travel"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "你知道哪些正则表达式测试网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_596",
+      "dropped_prompt_ids": [
+        "TEST_992"
+      ],
+      "canonical_life_domain": "tech",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "tech"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些IP地址查询网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_602",
+      "dropped_prompt_ids": [
+        "TEST_1098"
+      ],
+      "canonical_life_domain": "tech",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "others",
+        "tech"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": true
+    },
+    {
+      "prompt": "你知道哪些区块链浏览器网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_624",
+      "dropped_prompt_ids": [
+        "TEST_1008"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些热气球预订网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_857",
+      "dropped_prompt_ids": [
+        "TEST_1328"
+      ],
+      "canonical_life_domain": "travel",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "travel"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些科幻爱好者网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_938",
+      "dropped_prompt_ids": [
+        "TEST_1517"
+      ],
+      "canonical_life_domain": "social",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "social"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "推荐几个漏洞挖掘网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_963",
+      "dropped_prompt_ids": [
+        "TEST_1606"
+      ],
+      "canonical_life_domain": "tech",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "tech"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "有哪些机器学习实战网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_966",
+      "dropped_prompt_ids": [
+        "TEST_1613"
+      ],
+      "canonical_life_domain": "tech",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "tech"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "推荐几个深度学习框架网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_967",
+      "dropped_prompt_ids": [
+        "TEST_1614"
+      ],
+      "canonical_life_domain": "tech",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "tech"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "你知道哪些多链钱包网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_996",
+      "dropped_prompt_ids": [
+        "TEST_1639"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "给我一些硬件钱包官网",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_997",
+      "dropped_prompt_ids": [
+        "TEST_1640"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "official_entry",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "official_entry"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "推荐几个加密资产投资组合网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1011",
+      "dropped_prompt_ids": [
+        "TEST_1674"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "你知道哪些加密资产空投网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1028",
+      "dropped_prompt_ids": [
+        "TEST_1679"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "你知道哪些加密资产社交网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1032",
+      "dropped_prompt_ids": [
+        "TEST_1675"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": false
+    },
+    {
+      "prompt": "你知道哪些人像摄影网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1275",
+      "dropped_prompt_ids": [
+        "TEST_1487"
+      ],
+      "canonical_life_domain": "education",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "education",
+        "social"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": true
+    },
+    {
+      "prompt": "给我一些风光摄影网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1276",
+      "dropped_prompt_ids": [
+        "TEST_1488"
+      ],
+      "canonical_life_domain": "education",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "education",
+        "social"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": true
+    },
+    {
+      "prompt": "给我一些加密资产预警网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1684",
+      "dropped_prompt_ids": [
+        "TEST_2022"
+      ],
+      "canonical_life_domain": "crypto",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "crypto"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": false
+    }
+  ],
+  "cross_domain_conflicts_reviewed": [
+    {
+      "prompt": "有哪些旅行社交网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_389",
+      "dropped_prompt_ids": [
+        "TEST_838"
+      ],
+      "canonical_life_domain": "social",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "social",
+        "travel"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": true,
+      "review_note": "Retained the first source occurrence to preserve original source ordering and avoid subjective relabeling in the paper dataset."
+    },
+    {
+      "prompt": "有哪些IP地址查询网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_602",
+      "dropped_prompt_ids": [
+        "TEST_1098"
+      ],
+      "canonical_life_domain": "tech",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "others",
+        "tech"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": true,
+      "review_note": "Retained the first source occurrence to preserve original source ordering and avoid subjective relabeling in the paper dataset."
+    },
+    {
+      "prompt": "你知道哪些人像摄影网站？",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1275",
+      "dropped_prompt_ids": [
+        "TEST_1487"
+      ],
+      "canonical_life_domain": "education",
+      "canonical_intent": "resource_navigation",
+      "domains_seen": [
+        "education",
+        "social"
+      ],
+      "intents_seen": [
+        "resource_navigation"
+      ],
+      "cross_domain_conflict": true,
+      "review_note": "Retained the first source occurrence to preserve original source ordering and avoid subjective relabeling in the paper dataset."
+    },
+    {
+      "prompt": "给我一些风光摄影网站",
+      "group_size": 2,
+      "canonical_prompt_id": "TEST_1276",
+      "dropped_prompt_ids": [
+        "TEST_1488"
+      ],
+      "canonical_life_domain": "education",
+      "canonical_intent": "recommendation",
+      "domains_seen": [
+        "education",
+        "social"
+      ],
+      "intents_seen": [
+        "recommendation"
+      ],
+      "cross_domain_conflict": true,
+      "review_note": "Retained the first source occurrence to preserve original source ordering and avoid subjective relabeling in the paper dataset."
+    }
+  ]
+}

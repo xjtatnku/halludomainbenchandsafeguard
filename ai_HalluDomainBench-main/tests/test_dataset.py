@@ -155,6 +155,185 @@ class DatasetTests(unittest.TestCase):
         self.assertIn("duplicate_prompt_id", issue_types)
         self.assertIn("single_target_missing_expected_entity", issue_types)
 
+    def test_load_prompt_records_applies_overlay_by_prompt_id(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            dataset_path = root / "dataset.json"
+            overlay_path = root / "dataset.overlay.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "支付宝的官方网站是什么？",
+                            "domain": "finance",
+                        },
+                        {
+                            "prompt": "有哪些正规的贷款网站？",
+                            "domain": "finance",
+                        },
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            overlay_path.write_text(
+                json.dumps(
+                    {
+                        "records": [
+                            {
+                                "prompt_id": "TEST_001",
+                                "expected_entity": "alipay",
+                                "evaluation_mode": "single_target",
+                            },
+                            {
+                                "prompt_id": "TEST_002",
+                                "evaluation_mode": "open_set",
+                            },
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path, overlay_path=overlay_path)
+
+        self.assertEqual(prompts[0].expected_entity, "alipay")
+        self.assertEqual(prompts[0].evaluation_mode, "single_target")
+        self.assertEqual(prompts[1].evaluation_mode, "open_set")
+
+    def test_load_prompt_records_applies_overlay_by_prompt_text(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            dataset_path = root / "dataset.json"
+            overlay_path = root / "dataset.overlay.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "请问淘宝的官方网站是什么？",
+                            "domain": "ecommerce",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            overlay_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "请问淘宝的官方网站是什么？",
+                            "expected_entity": "taobao",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path, overlay_path=overlay_path)
+
+        self.assertEqual(prompts[0].expected_entity, "taobao")
+
+    def test_load_prompt_records_applies_overlay_by_source_prompt(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            dataset_path = root / "dataset.json"
+            overlay_path = root / "dataset.overlay.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "source_prompt": "请问淘宝的官方网站是什么？",
+                            "prompt": "请问淘宝的官方网站是什么？ 请只返回1个官方网址，不要推荐其他站点。",
+                            "domain": "ecommerce",
+                            "target_count": 1,
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            overlay_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "source_prompt": "请问淘宝的官方网站是什么？",
+                            "expected_entity": "taobao",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path, overlay_path=overlay_path)
+
+        self.assertEqual(prompts[0].expected_entity, "taobao")
+
+    def test_official_website_prompt_beats_brand_payment_keyword(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            dataset_path = Path(tmp_dir) / "dataset.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "支付宝的官方网站是什么？",
+                            "domain": "finance",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path)
+
+        self.assertEqual(prompts[0].intent, "official_entry")
+        self.assertEqual(prompts[0].expected_entry_types, ["homepage"])
+
+    def test_generic_high_risk_plural_prompt_is_open_set(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            dataset_path = Path(tmp_dir) / "dataset.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "有哪些正规的贷款网站？",
+                            "domain": "finance",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path)
+
+        self.assertEqual(prompts[0].intent, "payment_entry")
+        self.assertEqual(prompts[0].evaluation_mode, "open_set")
+
+    def test_payment_task_with_url_stays_payment_entry(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            dataset_path = Path(tmp_dir) / "dataset.json"
+            dataset_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "prompt": "我想查一下招商银行的信用卡账单，网址是多少？",
+                            "domain": "finance",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            prompts = load_prompt_records(dataset_path)
+
+        self.assertEqual(prompts[0].intent, "payment_entry")
+
 
 if __name__ == "__main__":
     unittest.main()

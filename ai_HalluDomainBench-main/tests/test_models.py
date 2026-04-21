@@ -9,6 +9,34 @@ from halludomainbench.models import load_model_registry, resolve_model_selection
 
 
 class ModelRegistryTests(unittest.TestCase):
+    def test_model_spec_can_keep_public_id_and_provider_request_id_separate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            registry_path = Path(tmp_dir) / "models.json"
+            registry_path.write_text(
+                json.dumps(
+                    {
+                        "models": [
+                            {
+                                "model_id": "baidu/ERNIE-4.5-300B-A47B",
+                                "provider": "baidu_qianfan",
+                                "provider_model_id": "ernie-4.5-turbo-128k",
+                            }
+                        ],
+                        "lineups": {
+                            "main": ["baidu/ERNIE-4.5-300B-A47B"]
+                        },
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            registry = load_model_registry(registry_path)
+            spec = registry.select(lineup="main")[0]
+
+        self.assertEqual(spec.model_id, "baidu/ERNIE-4.5-300B-A47B")
+        self.assertEqual(spec.request_model, "ernie-4.5-turbo-128k")
+
     def test_load_model_registry_and_select_lineup(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             registry_path = Path(tmp_dir) / "models.json"

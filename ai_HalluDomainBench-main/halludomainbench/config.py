@@ -12,7 +12,9 @@ from .validation_profiles import load_validation_profile
 DEFAULT_CONFIG: dict[str, Any] = {
     "project_name": "HalluDomainBench",
     "dataset_path": "../new_dataset.json",
+    "dataset_overlay_path": "",
     "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
+    "ground_truth_overlay_paths": [],
     "model_registry_path": "",
     "model_selection": {
         "lineup": "",
@@ -23,12 +25,12 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "validation_profile_path": "configs/validation_profiles.v1.json",
     "validation_profile": "baseline_http",
     "models": [
-        "Pro/zai-org/GLM-5",
-        "moonshotai/Kimi-K2-Thinking",
         "Qwen/Qwen3.5-397B-A17B",
         "deepseek-ai/DeepSeek-V3.2",
+        "Pro/moonshotai/Kimi-K2.5",
+        "zai-org/GLM-4.6",
         "baidu/ERNIE-4.5-300B-A47B",
-        "internlm/internlm2_5-7b-chat",
+        "doubao-seed-character-251128",
     ],
     "outputs": {
         "raw_responses": "data/response/model_real_outputs.jsonl",
@@ -58,7 +60,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "resume": False,
         "max_prompts": 0,
         "system_prompt": "",
-        "api_env_var": "SILICONFLOW_API_KEY",
+        "api_env_vars": ["SILICONFLOW_API_KEY", "BAIDU_QIANFAN_API_KEY", "VOLCENGINE_ARK_API_KEY"],
         "api_key_file": "configs/local.secrets.json",
     },
     "validation": {
@@ -151,7 +153,7 @@ class CollectionConfig:
     resume: bool = False
     max_prompts: int = 0
     system_prompt: str = ""
-    api_env_var: str = "SILICONFLOW_API_KEY"
+    api_env_vars: tuple[str, ...] = ("SILICONFLOW_API_KEY",)
     api_key_file: Path | None = None
 
 
@@ -184,7 +186,9 @@ class BenchmarkConfig:
     root_dir: Path
     project_name: str
     dataset_path: Path
+    dataset_overlay_path: Path | None
     ground_truth_path: Path
+    ground_truth_overlay_paths: tuple[Path, ...]
     models: list[str]
     outputs: OutputConfig
     collection: CollectionConfig
@@ -221,6 +225,22 @@ def _as_output_config(root_dir: Path, payload: dict[str, Any]) -> OutputConfig:
     )
 
 
+def _as_api_env_vars(payload: dict[str, Any]) -> tuple[str, ...]:
+    raw_values = payload.get("api_env_vars")
+    if raw_values is None:
+        raw_value = str(payload.get("api_env_var", "")).strip()
+        raw_values = [raw_value] if raw_value else []
+
+    values: list[str] = []
+    seen: set[str] = set()
+    for item in raw_values:
+        normalized = str(item).strip()
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            values.append(normalized)
+    return tuple(values or ("SILICONFLOW_API_KEY",))
+
+
 def load_config(config_path: str | Path | None = None) -> BenchmarkConfig:
     root_dir = PROJECT_ROOT
     overlay: dict[str, Any] = {}
@@ -250,7 +270,17 @@ def load_config(config_path: str | Path | None = None) -> BenchmarkConfig:
         root_dir=root_dir,
         project_name=str(merged["project_name"]),
         dataset_path=resolve_path(root_dir, merged["dataset_path"]),
+        dataset_overlay_path=(
+            resolve_path(root_dir, merged["dataset_overlay_path"])
+            if str(merged.get("dataset_overlay_path") or "").strip()
+            else None
+        ),
         ground_truth_path=resolve_path(root_dir, merged["ground_truth_path"]),
+        ground_truth_overlay_paths=tuple(
+            resolve_path(root_dir, item)
+            for item in merged.get("ground_truth_overlay_paths", [])
+            if str(item).strip()
+        ),
         models=model_ids,
         outputs=_as_output_config(root_dir, merged["outputs"]),
         collection=CollectionConfig(
@@ -266,7 +296,7 @@ def load_config(config_path: str | Path | None = None) -> BenchmarkConfig:
             resume=bool(merged["collection"].get("resume", False)),
             max_prompts=int(merged["collection"].get("max_prompts", 0)),
             system_prompt=str(merged["collection"].get("system_prompt", "")),
-            api_env_var=str(merged["collection"].get("api_env_var", "SILICONFLOW_API_KEY")),
+            api_env_vars=_as_api_env_vars(dict(merged["collection"] or {})),
             api_key_file=(
                 resolve_path(root_dir, merged["collection"]["api_key_file"])
                 if merged["collection"].get("api_key_file")

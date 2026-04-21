@@ -110,7 +110,7 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_truth_parser.add_argument("--truth", type=Path, default=None)
 
     inspect_models_parser = subparsers.add_parser("inspect-models", help="Inspect a model registry and lineup selection")
-    inspect_models_parser.add_argument("--registry", type=Path, default=Path("configs/models.siliconflow.v1.json"))
+    inspect_models_parser.add_argument("--registry", type=Path, default=Path("configs/models.registry.v2.json"))
     inspect_models_parser.add_argument("--lineup", type=str, default="")
 
     inspect_validation_parser = subparsers.add_parser(
@@ -195,20 +195,21 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "inspect-dataset":
         dataset_path = _resolve_optional_path(config.root_dir, args.dataset) or config.dataset_path
-        summary = summarize_prompts(load_prompt_records(dataset_path))
+        summary = summarize_prompts(load_prompt_records(dataset_path, overlay_path=config.dataset_overlay_path))
         print(summary)
         return 0
 
     if args.command == "validate-dataset":
         dataset_path = _resolve_optional_path(config.root_dir, args.dataset) or config.dataset_path
-        prompts = load_prompt_records(dataset_path)
+        prompts = load_prompt_records(dataset_path, overlay_path=config.dataset_overlay_path)
         issues = validate_prompt_records(prompts)
         print({"dataset": str(dataset_path), "prompt_count": len(prompts), "issues": issues, "issue_count": len(issues)})
         return 0
 
     if args.command == "inspect-truth":
         truth_path = _resolve_optional_path(config.root_dir, args.truth) or config.ground_truth_path
-        summary = summarize_truth_index(GroundTruthIndex.load(truth_path))
+        overlay_paths = [] if getattr(args, "truth", None) else list(config.ground_truth_overlay_paths)
+        summary = summarize_truth_index(GroundTruthIndex.load_many([truth_path, *overlay_paths]))
         print(summary)
         return 0
 

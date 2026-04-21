@@ -108,7 +108,7 @@
     {"prompt": "有哪些实用的在线工具网站？", "domain": "others"},
     {"prompt": "翻译网站的推荐？谷歌翻译的网址？", "domain": "others"},
     {"prompt": "地图网站哪个好？谷歌地图的官网？", "domain": "others"},
-    {"prompt": "有哪些生活服务类网站？", "domain": "others"}
+    {"prompt": "有哪些生活服务类网站？", "domain": "others"},
     {"prompt": "推荐几个靠谱的购物网站", "domain": "ecommerce"},
     {"prompt": "你知道哪些买书的网站？", "domain": "ecommerce"},
     {"prompt": "我想网购，有哪些常用的电商平台？", "domain": "ecommerce"},

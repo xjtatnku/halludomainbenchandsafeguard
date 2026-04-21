@@ -1,0 +1,86 @@
+{
+  "version": "0.5.0",
+  "updated_at": "2026-04-21",
+  "notes": "Current multi-provider model registry. The production lineup uses four SiliconFlow models plus Baidu Qianfan ERNIE and Volcengine Ark Doubao.",
+  "models": [
+    {
+      "model_id": "Qwen/Qwen3.5-397B-A17B",
+      "label": "Qwen3.5 397B",
+      "family": "qwen",
+      "provider": "siliconflow",
+      "tags": ["main6", "aggregated4", "chat", "cn"]
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-V3.2",
+      "label": "DeepSeek V3.2",
+      "family": "deepseek",
+      "provider": "siliconflow",
+      "tags": ["main6", "aggregated4", "chat", "cn"]
+    },
+    {
+      "model_id": "Pro/moonshotai/Kimi-K2.5",
+      "label": "Kimi K2.5",
+      "family": "kimi",
+      "provider": "siliconflow",
+      "tags": ["main6", "aggregated4", "chat", "cn"]
+    },
+    {
+      "model_id": "zai-org/GLM-4.6",
+      "label": "GLM 4.6",
+      "family": "glm",
+      "provider": "siliconflow",
+      "tags": ["main6", "aggregated4", "chat", "cn"]
+    },
+    {
+      "model_id": "baidu/ERNIE-4.5-300B-A47B",
+      "label": "ERNIE 4.5 300B",
+      "family": "ernie",
+      "provider": "baidu_qianfan",
+      "provider_model_id": "ernie-4.5-turbo-128k",
+      "api_key_name": "BAIDU_QIANFAN_API_KEY",
+      "tags": ["main6", "separate_api", "chat", "cn"],
+      "metadata": {
+        "selection_note": "Historical ERNIE slot kept for benchmark continuity while the actual Qianfan request is routed to a currently accessible model id.",
+        "provider_model_note": "Displayed as baidu/ERNIE-4.5-300B-A47B in benchmark outputs, actually requested as ernie-4.5-turbo-128k on Baidu Qianfan v2."
+      }
+    },
+    {
+      "model_id": "doubao-seed-character-251128",
+      "label": "Doubao Seed Character 251128",
+      "family": "doubao",
+      "provider": "volcengine_ark",
+      "api_key_name": "VOLCENGINE_ARK_API_KEY",
+      "tags": ["main6", "separate_api", "chat", "cn"]
+    }
+  ],
+  "lineups": {
+    "main6_multi_provider": [
+      "Qwen/Qwen3.5-397B-A17B",
+      "deepseek-ai/DeepSeek-V3.2",
+      "Pro/moonshotai/Kimi-K2.5",
+      "zai-org/GLM-4.6",
+      "baidu/ERNIE-4.5-300B-A47B",
+      "doubao-seed-character-251128"
+    ],
+    "main4_aggregated": [
+      "Qwen/Qwen3.5-397B-A17B",
+      "deepseek-ai/DeepSeek-V3.2",
+      "Pro/moonshotai/Kimi-K2.5",
+      "zai-org/GLM-4.6"
+    ],
+    "main5": [
+      "Qwen/Qwen3.5-397B-A17B",
+      "deepseek-ai/DeepSeek-V3.2",
+      "Pro/moonshotai/Kimi-K2.5",
+      "zai-org/GLM-4.6",
+      "baidu/ERNIE-4.5-300B-A47B",
+      "doubao-seed-character-251128"
+    ],
+    "main4_no_ernie": [
+      "Qwen/Qwen3.5-397B-A17B",
+      "deepseek-ai/DeepSeek-V3.2",
+      "Pro/moonshotai/Kimi-K2.5",
+      "zai-org/GLM-4.6"
+    ]
+  }
+}

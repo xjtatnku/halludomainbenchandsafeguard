@@ -9,7 +9,7 @@ from typing import Any
 from .config import BenchmarkConfig
 from .dataset import index_prompts_by_id, load_prompt_records
 from .models import ModelSpec, normalize_model_spec
-from .providers import LLMFactory, load_api_keys
+from .providers import LLMFactory, load_api_keys, required_api_key_names, resolve_api_key_name
 from .reporting import write_csv, write_legacy_reports
 from .scoring import (
     aggregate_risk_labels,
@@ -35,8 +35,21 @@ def load_existing_pairs(path) -> set[tuple[str, str]]:
     return seen
 
 
+def selected_model_ids(config: BenchmarkConfig) -> set[str]:
+    if config.models:
+        return {str(model_id).strip() for model_id in config.models if str(model_id).strip()}
+    return {spec.model_id for spec in config.model_specs}
+
+
+def filter_rows_for_selected_models(rows: list[dict], config: BenchmarkConfig) -> list[dict]:
+    active_models = selected_model_ids(config)
+    if not active_models:
+        return rows
+    return [row for row in rows if str(row.get("model", "")).strip() in active_models]
+
+
 def collect_responses(config: BenchmarkConfig, *, output_path=None) -> list[dict]:
-    prompts = load_prompt_records(config.dataset_path)
+    prompts = load_prompt_records(config.dataset_path, overlay_path=config.dataset_overlay_path)
     if config.collection.max_prompts > 0:
         prompts = prompts[: config.collection.max_prompts]
     model_specs = config.model_specs or [normalize_model_spec(model_name) for model_name in config.models]
@@ -45,11 +58,16 @@ def collect_responses(config: BenchmarkConfig, *, output_path=None) -> list[dict
     if output_file.exists() and not config.collection.resume:
         output_file.unlink()
     seen = load_existing_pairs(output_file) if config.collection.resume else set()
-    api_keys = load_api_keys(config.collection.api_env_var, config.collection.api_key_file)
-    if not api_keys.get("SILICONFLOW_API_KEY"):
+    model_api_key_names = required_api_key_names(model_specs)
+    api_keys = load_api_keys(
+        required_api_key_names(model_specs, config.collection.api_env_vars),
+        config.collection.api_key_file,
+    )
+    missing_api_keys = [key_name for key_name in model_api_key_names if not api_keys.get(key_name)]
+    if missing_api_keys:
         raise RuntimeError(
-            "Missing API key: set the environment variable "
-            f"{config.collection.api_env_var} or populate {config.collection.api_key_file} before running collection."
+            "Missing API key(s): set "
+            f"{', '.join(missing_api_keys)} in the environment or populate {config.collection.api_key_file} before running collection."
         )
     client_cache: dict[str, Any] = {}
     lock = Lock()
@@ -60,7 +78,13 @@ def collect_responses(config: BenchmarkConfig, *, output_path=None) -> list[dict
             if pair in seen:
                 return
             seen.add(pair)
-            cache_key = model_spec.provider
+            cache_key = "|".join(
+                [
+                    model_spec.provider,
+                    resolve_api_key_name(model_spec),
+                    model_spec.base_url.strip(),
+                ]
+            )
             if cache_key not in client_cache:
                 client_cache[cache_key] = LLMFactory.get_client(model_spec, api_keys)
             client = client_cache[cache_key]
@@ -94,7 +118,7 @@ def collect_responses(config: BenchmarkConfig, *, output_path=None) -> list[dict
                 request_timeout = float(request_overrides.pop("timeout_sec", config.collection.timeout_sec))
                 request_system_prompt = str(request_overrides.pop("system_prompt", config.collection.system_prompt))
                 result = client.chat_completion(
-                    model=model_spec.model_id,
+                    model=model_spec.request_model,
                     user_text=prompt.prompt,
                     system_prompt=request_system_prompt,
                     temperature=request_temperature,
@@ -126,6 +150,7 @@ def collect_responses(config: BenchmarkConfig, *, output_path=None) -> list[dict
                 "model_label": model_spec.label or model_spec.model_id,
                 "model_family": model_spec.family,
                 "model_provider": model_spec.provider,
+                "provider_model_id": model_spec.request_model,
                 "model_tags": model_spec.tags,
                 "life_domain": prompt.life_domain,
                 "scenario": prompt.scenario,
@@ -163,13 +188,13 @@ def collect_responses(config: BenchmarkConfig, *, output_path=None) -> list[dict
         for future in as_completed(futures):
             future.result()
 
-    return read_jsonl(output_file)
+    return filter_rows_for_selected_models(read_jsonl(output_file), config)
 
 
 def verify_responses(config: BenchmarkConfig, *, input_path=None, output_path=None) -> list[dict]:
     input_file = input_path or config.outputs.raw_responses
     output_file = output_path or config.outputs.validated_responses
-    rows = read_jsonl(input_file)
+    rows = filter_rows_for_selected_models(read_jsonl(input_file), config)
     validated = validate_rows(
         rows,
         concurrency_limit=config.validation.concurrency_limit,
@@ -192,10 +217,10 @@ def score_responses(config: BenchmarkConfig, *, input_path=None, output_path=Non
     input_file = input_path or config.outputs.validated_responses
     output_file = output_path or config.outputs.scored_responses
 
-    prompts = load_prompt_records(config.dataset_path)
+    prompts = load_prompt_records(config.dataset_path, overlay_path=config.dataset_overlay_path)
     prompts_by_id = index_prompts_by_id(prompts)
-    truth_index = GroundTruthIndex.load(config.ground_truth_path)
-    validated_rows = read_jsonl(input_file)
+    truth_index = GroundTruthIndex.load_many([config.ground_truth_path, *config.ground_truth_overlay_paths])
+    validated_rows = filter_rows_for_selected_models(read_jsonl(input_file), config)
     scored = score_rows(
         validated_rows,
         prompts_by_id=prompts_by_id,
@@ -215,6 +240,8 @@ def generate_reports(config: BenchmarkConfig, *, scored_rows=None, validated_row
         validated_rows = read_jsonl(config.outputs.validated_responses) if config.outputs.validated_responses.exists() else []
     if scored_rows is None:
         scored_rows = read_jsonl(config.outputs.scored_responses) if config.outputs.scored_responses.exists() else []
+    validated_rows = filter_rows_for_selected_models(validated_rows, config)
+    scored_rows = filter_rows_for_selected_models(scored_rows, config)
 
     write_legacy_reports(
         validated_rows,

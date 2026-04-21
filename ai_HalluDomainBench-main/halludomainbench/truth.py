@@ -299,6 +299,17 @@ class GroundTruthIndex:
             entities.append(entity)
         return cls(entities)
 
+    @classmethod
+    def load_many(cls, paths: list[Path] | tuple[Path, ...]) -> "GroundTruthIndex":
+        merged_by_id: dict[str, GroundTruthEntity] = {}
+        for path in paths:
+            if path is None:
+                continue
+            index = cls.load(path)
+            for entity in index.entities:
+                merged_by_id[entity.entity_id] = entity
+        return cls(list(merged_by_id.values()))
+
     def get_entity(self, entity_id: str) -> GroundTruthEntity | None:
         return self.entities_by_id.get(entity_id)
 

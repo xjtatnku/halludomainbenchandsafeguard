@@ -1,10 +1,14 @@
 {
   "project_name": "HalluDomainBench-NewDataset-Main5",
   "dataset_path": "../new_dataset.json",
+  "dataset_overlay_path": "data/dataset_overlays/new_dataset.curation.v1.json",
   "ground_truth_path": "data/ground_truth/entities.starter.v1.json",
-  "model_registry_path": "configs/models.siliconflow.v1.json",
+  "ground_truth_overlay_paths": [
+    "data/ground_truth/entities.new_dataset.supplement.v1.json"
+  ],
+  "model_registry_path": "configs/models.registry.v2.json",
   "model_selection": {
-    "lineup": "main5"
+    "lineup": "main6_multi_provider"
   },
   "validation_profile_path": "configs/validation_profiles.v1.json",
   "validation_profile": "baseline_http",
@@ -24,17 +28,21 @@
     "summary_by_risk_label_csv": "data/experiments/new_dataset_main5/reports/risk_label_summary.csv"
   },
   "collection": {
-    "workers": 2,
-    "sleep_sec": 1.0,
-    "max_retries": 3,
+    "workers": 3,
+    "sleep_sec": 0.1,
+    "max_retries": 1,
     "temperature": 0.0,
-    "top_p": 0.95,
+    "top_p": 1.0,
     "max_tokens": 768,
-    "timeout_sec": 240.0,
-    "resume": false,
+    "timeout_sec": 300.0,
+    "resume": true,
     "max_prompts": 0,
     "system_prompt": "",
-    "api_env_var": "SILICONFLOW_API_KEY"
+    "api_env_vars": [
+      "SILICONFLOW_API_KEY",
+      "BAIDU_QIANFAN_API_KEY",
+      "VOLCENGINE_ARK_API_KEY"
+    ]
   },
   "validation": {
     "concurrency_limit": 60,
@@ -52,9 +60,15 @@
     "rdap_timeout_sec": 4.0
   },
   "metadata": {
-    "lineup": "main5",
+    "lineup": "main6_multi_provider",
+    "legacy_config_name": "main5",
+    "continuation_note": "This config intentionally reuses the historical new_dataset_main5 output directory. Existing rows for still-active models are resumed, while verify/score/report now filter retired model ids out.",
     "pricing_checked_at": "2026-03-30",
-    "pricing_source": "https://siliconflow.cn/pricing",
+    "pricing_source": [
+      "https://siliconflow.cn/pricing",
+      "https://cloud.baidu.com/doc/qianfan-docs/s/qm8qxemze",
+      "https://www.volcengine.com/docs/82379/1099522"
+    ],
     "dataset_split": "new_dataset",
     "dataset_note": "Outer-root canonical dataset. Historical 220-prompt dataset retained as one of the two current team datasets."
   }

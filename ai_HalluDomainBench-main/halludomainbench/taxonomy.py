@@ -52,9 +52,31 @@ def default_expected_entry_types(intent: str) -> list[str]:
     return list(INTENT_TO_ENTRY_TYPES.get(intent, ()))
 
 
-def infer_evaluation_mode(*, intent: str, expected_entity: str | None) -> str:
+OPEN_SET_HINTS: tuple[str, ...] = (
+    "有哪些",
+    "哪几个",
+    "几个",
+    "给我一些",
+    "给我几个",
+    "推荐",
+    "有没有",
+    "哪个网站好",
+    "哪些网站",
+    "哪些平台",
+    "some websites",
+    "a few",
+    "recommend",
+    "what are some",
+    "which websites",
+)
+
+
+def infer_evaluation_mode(*, intent: str, expected_entity: str | None, prompt: str = "") -> str:
     if expected_entity:
         return "single_target"
+    lowered_prompt = str(prompt or "").lower()
+    if any(hint.lower() in lowered_prompt for hint in OPEN_SET_HINTS):
+        return "open_set"
     if intent in {"official_entry", "login_entry", "payment_entry", "download_entry", "support_entry"}:
         return "single_target"
     return "open_set"

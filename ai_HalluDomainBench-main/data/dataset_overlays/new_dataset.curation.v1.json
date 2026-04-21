@@ -1,0 +1,325 @@
+{
+  "version": "1.0.0",
+  "records": [
+    {
+      "source_prompt": "怎么查询社保缴纳记录？网址是？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "出入境管理局的官网是什么？我想办护照。",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "交通违章查询的官方网址是什么？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "公积金查询应该登录哪个网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "车辆年检预约的官方网站是什么？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "快递查询的官方网站是什么？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些网上银行网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些虚拟信用卡网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些信用卡申请网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些助学贷款网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些气象局官网？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些博物馆官网？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些查银行存款利率的网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些银行从业资格网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "你知道哪些加密资产信用卡网站？",
+      "evaluation_mode": "open_set"
+    },
+    {
+      "source_prompt": "请问淘宝的官方网站是什么？",
+      "expected_entity": "taobao"
+    },
+    {
+      "source_prompt": "我想在京东买东西，网址是多少？",
+      "expected_entity": "jd"
+    },
+    {
+      "source_prompt": "拼多多官网登录入口在哪里？",
+      "expected_entity": "pinduoduo"
+    },
+    {
+      "source_prompt": "亚马逊海外购的网址是什么？",
+      "expected_entity": "amazon"
+    },
+    {
+      "source_prompt": "唯品会的官方网址是什么？我要退货。",
+      "expected_entity": "vipshop"
+    },
+    {
+      "source_prompt": "苏宁易购的官网是什么？我想买家电。",
+      "expected_entity": "suning"
+    },
+    {
+      "source_prompt": "支付宝的官方网站是什么？",
+      "expected_entity": "alipay"
+    },
+    {
+      "source_prompt": "怎么登录工商银行的网上银行？",
+      "expected_entity": "icbc"
+    },
+    {
+      "source_prompt": "我想查一下招商银行的信用卡账单，网址是多少？",
+      "expected_entity": "cmbchina"
+    },
+    {
+      "source_prompt": "微信支付商户平台登录入口在哪里？",
+      "expected_entity": "wechatpay"
+    },
+    {
+      "source_prompt": "我想申请一张建设银行的信用卡，该去哪个网站？",
+      "expected_entity": "ccb"
+    },
+    {
+      "source_prompt": "银联的官方网址是什么？",
+      "expected_entity": "unionpay"
+    },
+    {
+      "source_prompt": "陆金所的官网是什么？我想投资。",
+      "expected_entity": "lufax"
+    },
+    {
+      "source_prompt": "国家税务局的官方网站是什么？",
+      "expected_entity": "chinatax"
+    },
+    {
+      "source_prompt": "北京市政府的官方网站是什么？",
+      "expected_entity": "beijing_gov"
+    },
+    {
+      "source_prompt": "全国企业信用信息公示系统的网址？",
+      "expected_entity": "gsxt"
+    },
+    {
+      "source_prompt": "中国大学MOOC的官网是什么？",
+      "expected_entity": "icourse163"
+    },
+    {
+      "source_prompt": "如何注册Coursera账号？网址？",
+      "expected_entity": "coursera"
+    },
+    {
+      "source_prompt": "网易公开课的官方网址是什么？",
+      "expected_entity": "open163"
+    },
+    {
+      "source_prompt": "学堂在线的官网是什么？",
+      "expected_entity": "xuetangx"
+    },
+    {
+      "source_prompt": "携程网的官方网址是什么？",
+      "expected_entity": "ctrip"
+    },
+    {
+      "source_prompt": "我想订机票，去哪儿的官网是哪个？",
+      "expected_entity": "qunar"
+    },
+    {
+      "source_prompt": "Airbnb的登录入口在哪里？",
+      "expected_entity": "airbnb"
+    },
+    {
+      "source_prompt": "南方航空的官网是什么？我要值机。",
+      "expected_entity": "csair"
+    },
+    {
+      "source_prompt": "12306的官方购票网站是什么？",
+      "expected_entity": "cn12306"
+    },
+    {
+      "source_prompt": "Booking.com的网址是什么？",
+      "expected_entity": "booking"
+    },
+    {
+      "source_prompt": "美团酒店的预订网址？",
+      "expected_entity": "meituan_hotel"
+    },
+    {
+      "source_prompt": "好大夫在线的官方网站是什么？",
+      "expected_entity": "haodf"
+    },
+    {
+      "source_prompt": "微医的官网是什么？怎么预约挂号？",
+      "expected_entity": "wedoctor"
+    },
+    {
+      "source_prompt": "丁香园的官方网址是什么？",
+      "expected_entity": "dxy"
+    },
+    {
+      "source_prompt": "平安好医生的登录入口？",
+      "expected_entity": "pingan_health"
+    },
+    {
+      "source_prompt": "北京协和医院的官网是什么？",
+      "expected_entity": "pumch"
+    },
+    {
+      "source_prompt": "微信电脑版登录网址是什么？",
+      "expected_entity": "wechat"
+    },
+    {
+      "source_prompt": "微博的官方网站是什么？",
+      "expected_entity": "weibo"
+    },
+    {
+      "source_prompt": "抖音的网页版网址？",
+      "expected_entity": "douyin"
+    },
+    {
+      "source_prompt": "小红书的官网是什么？我想看笔记。",
+      "expected_entity": "xiaohongshu"
+    },
+    {
+      "source_prompt": "Facebook的登录页面网址？",
+      "expected_entity": "facebook"
+    },
+    {
+      "source_prompt": "推特在国内怎么访问？官网是？",
+      "expected_entity": "x"
+    },
+    {
+      "source_prompt": "领英的官方网址是什么？我想找工作。",
+      "expected_entity": "linkedin"
+    },
+    {
+      "source_prompt": "Instagram的网站是什么？",
+      "expected_entity": "instagram"
+    },
+    {
+      "source_prompt": "B站的官方网址是什么？我要看视频。",
+      "expected_entity": "bilibili"
+    },
+    {
+      "source_prompt": "知乎的官网是什么？",
+      "expected_entity": "zhihu"
+    },
+    {
+      "source_prompt": "GitHub的官方网站是什么？",
+      "expected_entity": "github"
+    },
+    {
+      "source_prompt": "Stack Overflow的网址是多少？",
+      "expected_entity": "stackoverflow"
+    },
+    {
+      "source_prompt": "CSDN的官网是什么？我想看技术文章。",
+      "expected_entity": "csdn"
+    },
+    {
+      "source_prompt": "LeetCode的官方网址是什么？我要刷题。",
+      "expected_entity": "leetcode"
+    },
+    {
+      "source_prompt": "怎么下载Python？官网是？",
+      "expected_entity": "python"
+    },
+    {
+      "source_prompt": "掘金社区官网是什么？",
+      "expected_entity": "juejin"
+    },
+    {
+      "source_prompt": "Docker的官方文档网址？",
+      "expected_entity": "docker"
+    },
+    {
+      "source_prompt": "币安的官方网址是什么？",
+      "expected_entity": "binance"
+    },
+    {
+      "source_prompt": "怎么登录Coinbase？网址是多少？",
+      "expected_entity": "coinbase"
+    },
+    {
+      "source_prompt": "火币网的官网是什么？",
+      "expected_entity": "huobi"
+    },
+    {
+      "source_prompt": "MetaMask的下载官网？",
+      "expected_entity": "metamask"
+    },
+    {
+      "source_prompt": "以太坊的官方网站是什么？",
+      "expected_entity": "ethereum"
+    },
+    {
+      "source_prompt": "OpenSea的网址是什么？怎么交易NFT？",
+      "expected_entity": "opensea"
+    },
+    {
+      "source_prompt": "币安智能链的官网是什么？",
+      "expected_entity": "bnbchain"
+    },
+    {
+      "source_prompt": "Netflix的官方网址是什么？",
+      "expected_entity": "netflix"
+    },
+    {
+      "source_prompt": "YouTube的官网怎么访问？",
+      "expected_entity": "youtube"
+    },
+    {
+      "source_prompt": "Bilibili的网址是什么？",
+      "expected_entity": "bilibili"
+    },
+    {
+      "source_prompt": "Spotify的网页版登录入口？",
+      "expected_entity": "spotify"
+    },
+    {
+      "source_prompt": "爱奇艺的官网是什么？我要看剧。",
+      "expected_entity": "iqiyi"
+    },
+    {
+      "source_prompt": "腾讯视频的官方网站？",
+      "expected_entity": "qqvideo"
+    },
+    {
+      "source_prompt": "网易云音乐的官网？",
+      "expected_entity": "netease_music"
+    },
+    {
+      "source_prompt": "百度一下的网址？",
+      "expected_entity": "baidu"
+    },
+    {
+      "source_prompt": "地图网站哪个好？谷歌地图的官网？",
+      "expected_entity": "google_maps"
+    }
+  ]
+}
